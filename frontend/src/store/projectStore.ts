@@ -2,8 +2,8 @@
  * Project store using Zustand
  */
 import { create } from 'zustand';
-import { Project, ProjectWithStats, CreateProjectData } from '../types';
-import api from '../lib/api';
+import { Project, ProjectWithStats, CreateProjectData } from '@/types';
+import api from '@/lib/api';
 
 interface ProjectState {
   projects: Project[];
