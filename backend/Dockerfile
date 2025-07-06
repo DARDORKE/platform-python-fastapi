@@ -1,7 +1,7 @@
 # Multi-stage Dockerfile pour le backend FastAPI
 
 # Stage 1: Builder
-FROM python:3.11-slim as builder
+FROM python:3.11-slim AS builder
 
 # Variables d'environnement
 ENV PYTHONDONTWRITEBYTECODE=1 \

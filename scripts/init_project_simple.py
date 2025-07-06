@@ -24,11 +24,11 @@ from app.models.base import Base
 def print_banner():
     """Print initialization banner."""
     print("=" * 80)
-    print("🚀 INITIALISATION SIMPLE DU PROJET PORTFOLIO PLATFORM")
+    print("🚀 SIMPLE INITIALIZATION OF PORTFOLIO PLATFORM PROJECT")
     print("=" * 80)
-    print(f"📅 Date/Heure : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print(f"🐍 Version Python : {sys.version.split()[0]}")
-    print("⚡ Mode : Création directe des tables (sans Alembic)")
+    print(f"📅 Date/Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"🐍 Python Version: {sys.version.split()[0]}")
+    print("⚡ Mode: Direct table creation (without Alembic)")
     print("=" * 80)
 
 def get_database_url():
@@ -44,30 +44,30 @@ def get_database_url():
 
 def wait_for_database(engine, max_retries=30):
     """Wait for database to be ready."""
-    print("⏳ Attente de la connexion à la base de données...")
+    print("⏳ Waiting for database connection...")
     
     for attempt in range(max_retries):
         try:
             with engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
-            print("✅ Connexion à la base de données établie")
+            print("✅ Database connection established")
             return True
         except OperationalError as e:
             if attempt < max_retries - 1:
-                print(f"❌ Base de données non prête (tentative {attempt + 1}/{max_retries})")
+                print(f"❌ Database not ready (attempt {attempt + 1}/{max_retries})")
                 time.sleep(2)
             else:
-                print(f"❌ Échec de connexion après {max_retries} tentatives")
+                print(f"❌ Connection failed after {max_retries} attempts")
                 return False
     return False
 
 def create_database_schema(engine):
     """Create database schema without Alembic."""
-    print("🔧 Création du schéma de base de données...")
+    print("🔧 Creating database schema...")
     
     try:
         # Drop and recreate all tables for clean state
-        print("🗑️  Suppression des tables existantes...")
+        print("🗑️  Dropping existing tables...")
         Base.metadata.drop_all(bind=engine)
         
         print("🏗️  Création des nouvelles tables...")
@@ -88,7 +88,7 @@ def create_demo_users(session):
         {
             "email": "admin@example.com",
             "username": "admin",
-            "full_name": "Administrateur Système",
+            "full_name": "System Administrator",
             "hashed_password": get_password_hash("admin123"),
             "is_active": True,
             "is_superuser": True,
@@ -97,7 +97,7 @@ def create_demo_users(session):
         {
             "email": "manager@example.com",
             "username": "manager",
-            "full_name": "Chef de Projet",
+            "full_name": "Project Manager",
             "hashed_password": get_password_hash("manager123"),
             "is_active": True,
             "role": UserRole.MANAGER,
@@ -121,7 +121,7 @@ def create_demo_users(session):
         {
             "email": "developer@example.com",
             "username": "developer",
-            "full_name": "Développeur Senior",
+            "full_name": "Senior Developer",
             "hashed_password": get_password_hash("dev123"),
             "is_active": True,
             "role": UserRole.USER,
@@ -129,7 +129,7 @@ def create_demo_users(session):
         {
             "email": "tester@example.com",
             "username": "tester",
-            "full_name": "Testeur QA",
+            "full_name": "QA Tester",
             "hashed_password": get_password_hash("test123"),
             "is_active": True,
             "role": UserRole.USER,
@@ -153,7 +153,7 @@ def create_demo_projects(session, users):
     projects_data = [
         {
             "name": "E-commerce Platform",
-            "description": "Développement d'une plateforme e-commerce moderne avec React, FastAPI et PostgreSQL. Système complet avec gestion des produits, commandes, paiements Stripe et analytics avancées.",
+            "description": "Development of a modern e-commerce platform with React, FastAPI and PostgreSQL. Complete system with product management, orders, Stripe payments and advanced analytics.",
             "status": ProjectStatus.ACTIVE,
             "priority": ProjectPriority.HIGH,
             "start_date": datetime.now() - timedelta(days=45),
@@ -163,7 +163,7 @@ def create_demo_projects(session, users):
         },
         {
             "name": "Mobile App Development",
-            "description": "Application mobile React Native pour iOS et Android avec fonctionnalités offline, notifications push et synchronisation cloud.",
+            "description": "React Native mobile application for iOS and Android with offline features, push notifications and cloud synchronization.",
             "status": ProjectStatus.PLANNING,
             "priority": ProjectPriority.MEDIUM,
             "start_date": datetime.now() + timedelta(days=10),
@@ -173,7 +173,7 @@ def create_demo_projects(session, users):
         },
         {
             "name": "API Documentation Portal",
-            "description": "Portail de documentation API complet avec guides développeur, exemples interactifs et outils de test automatisés.",
+            "description": "Complete API documentation portal with developer guides, interactive examples and automated testing tools.",
             "status": ProjectStatus.ACTIVE,
             "priority": ProjectPriority.LOW,
             "start_date": datetime.now() - timedelta(days=20),
@@ -183,7 +183,7 @@ def create_demo_projects(session, users):
         },
         {
             "name": "DevOps Pipeline",
-            "description": "Pipeline CI/CD complet avec Docker, Kubernetes, monitoring Prometheus/Grafana et déploiement automatisé multi-environnements.",
+            "description": "Complete CI/CD pipeline with Docker, Kubernetes, Prometheus/Grafana monitoring and automated multi-environment deployment.",
             "status": ProjectStatus.COMPLETED,
             "priority": ProjectPriority.HIGH,
             "start_date": datetime.now() - timedelta(days=90),
@@ -193,7 +193,7 @@ def create_demo_projects(session, users):
         },
         {
             "name": "Analytics Dashboard",
-            "description": "Tableau de bord analytics en temps réel avec visualisations D3.js, rapports personnalisés et alertes automatiques pour le suivi des KPIs business.",
+            "description": "Real-time analytics dashboard with D3.js visualizations, custom reports and automatic alerts for business KPI tracking.",
             "status": ProjectStatus.ACTIVE,
             "priority": ProjectPriority.MEDIUM,
             "start_date": datetime.now() - timedelta(days=30),
@@ -203,7 +203,7 @@ def create_demo_projects(session, users):
         },
         {
             "name": "Security Audit & Compliance",
-            "description": "Audit de sécurité complet avec tests de pénétration, analyse des vulnérabilités OWASP, mise en conformité RGPD et recommandations de sécurité.",
+            "description": "Complete security audit with penetration testing, OWASP vulnerability analysis, GDPR compliance and security recommendations.",
             "status": ProjectStatus.PLANNING,
             "priority": ProjectPriority.HIGH,
             "start_date": datetime.now() + timedelta(days=5),
@@ -213,7 +213,7 @@ def create_demo_projects(session, users):
         },
         {
             "name": "Microservices Architecture",
-            "description": "Refactoring vers une architecture microservices avec API Gateway, service mesh, observabilité et patterns de résilience.",
+            "description": "Refactoring to microservices architecture with API Gateway, service mesh, observability and resilience patterns.",
             "status": ProjectStatus.ACTIVE,
             "priority": ProjectPriority.HIGH,
             "start_date": datetime.now() - timedelta(days=60),
@@ -223,7 +223,7 @@ def create_demo_projects(session, users):
         },
         {
             "name": "Customer Support Portal",
-            "description": "Portail de support client avec chatbot IA, système de tickets, base de connaissances et analytics de satisfaction client.",
+            "description": "Customer support portal with AI chatbot, ticket system, knowledge base and customer satisfaction analytics.",
             "status": ProjectStatus.PLANNING,
             "priority": ProjectPriority.MEDIUM,
             "start_date": datetime.now() + timedelta(days=20),
@@ -233,7 +233,7 @@ def create_demo_projects(session, users):
         },
         {
             "name": "Data Warehouse & ETL",
-            "description": "Construction d'un data warehouse avec pipelines ETL Apache Airflow, intégration multi-sources et dashboards business intelligence.",
+            "description": "Data warehouse construction with Apache Airflow ETL pipelines, multi-source integration and business intelligence dashboards.",
             "status": ProjectStatus.ACTIVE,
             "priority": ProjectPriority.MEDIUM,
             "start_date": datetime.now() - timedelta(days=25),
@@ -243,7 +243,7 @@ def create_demo_projects(session, users):
         },
         {
             "name": "Machine Learning Platform",
-            "description": "Plateforme MLOps complète avec entraînement de modèles, déploiement automatisé, monitoring des performances et A/B testing.",
+            "description": "Complete MLOps platform with model training, automated deployment, performance monitoring and A/B testing.",
             "status": ProjectStatus.PLANNING,
             "priority": ProjectPriority.LOW,
             "start_date": datetime.now() + timedelta(days=30),
@@ -253,7 +253,7 @@ def create_demo_projects(session, users):
         },
         {
             "name": "Performance Optimization",
-            "description": "Optimisation des performances frontend et backend : lazy loading, CDN, cache Redis, optimisation SQL et monitoring APM.",
+            "description": "Frontend and backend performance optimization: lazy loading, CDN, Redis cache, SQL optimization and APM monitoring.",
             "status": ProjectStatus.COMPLETED,
             "priority": ProjectPriority.HIGH,
             "start_date": datetime.now() - timedelta(days=50),
@@ -263,7 +263,7 @@ def create_demo_projects(session, users):
         },
         {
             "name": "Multi-tenant SaaS Platform",
-            "description": "Transformation en plateforme SaaS multi-tenant avec isolation des données, facturation automatisée et self-service onboarding.",
+            "description": "Transformation into multi-tenant SaaS platform with data isolation, automated billing and self-service onboarding.",
             "status": ProjectStatus.ACTIVE,
             "priority": ProjectPriority.HIGH,
             "start_date": datetime.now() - timedelta(days=35),
@@ -291,7 +291,7 @@ def create_demo_tasks(session, users, projects):
         # E-commerce Platform tasks (project[0])
         {
             "title": "Setup AWS infrastructure",
-            "description": "Configuration de l'infrastructure AWS avec Terraform : VPC, subnets, ECS, RDS, ElastiCache",
+            "description": "AWS infrastructure configuration with Terraform: VPC, subnets, ECS, RDS, ElastiCache",
             "status": TaskStatus.DONE,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() - timedelta(days=40),
@@ -304,7 +304,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "JWT Authentication System",
-            "description": "Implémentation complète du système d'authentification JWT avec refresh tokens, 2FA et gestion des rôles",
+            "description": "Complete JWT authentication system implementation with refresh tokens, 2FA and role management",
             "status": TaskStatus.IN_PROGRESS,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=7),
@@ -315,7 +315,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Product Catalog API",
-            "description": "Développement des endpoints REST pour la gestion des produits avec recherche avancée, filtres et pagination",
+            "description": "REST endpoints development for product management with advanced search, filters and pagination",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=20),
@@ -325,7 +325,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Shopping Cart & Checkout",
-            "description": "Fonctionnalité de panier d'achat avec persistance Redis, calcul de taxes et processus de commande",
+            "description": "Shopping cart functionality with Redis persistence, tax calculation and order process",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=35),
@@ -335,7 +335,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Stripe Payment Integration",
-            "description": "Intégration complète avec Stripe : paiements, webhooks, remboursements et gestion des échecs",
+            "description": "Complete Stripe integration: payments, webhooks, refunds and failure handling",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=42),
@@ -345,7 +345,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Order Management System",
-            "description": "Système de gestion des commandes avec tracking, notifications et gestion des retours",
+            "description": "Order management system with tracking, notifications and returns handling",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=50),
@@ -355,7 +355,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Inventory Management",
-            "description": "Gestion des stocks en temps réel avec alertes automatiques et synchronisation multi-canal",
+            "description": "Real-time inventory management with automatic alerts and multi-channel synchronization",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=55),
@@ -365,7 +365,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Analytics & Reporting Dashboard",
-            "description": "Tableau de bord avec métriques business, analyses de vente et rapports automatisés",
+            "description": "Dashboard with business metrics, sales analytics and automated reports",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.LOW,
             "due_date": datetime.now() + timedelta(days=65),
@@ -377,7 +377,7 @@ def create_demo_tasks(session, users, projects):
         # Mobile App Development tasks (project[1])
         {
             "title": "React Native Architecture",
-            "description": "Conception de l'architecture React Native avec Redux Toolkit, navigation et gestion d'état",
+            "description": "React Native architecture design with Redux Toolkit, navigation and state management",
             "status": TaskStatus.IN_PROGRESS,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=15),
@@ -388,7 +388,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "UI/UX Design System",
-            "description": "Création du système de design avec composants réutilisables, thèmes et guidelines",
+            "description": "Design system creation with reusable components, themes and guidelines",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=25),
@@ -398,7 +398,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Push Notifications Setup",
-            "description": "Implémentation des notifications push avec Firebase/FCM et gestion des permissions",
+            "description": "Push notifications implementation with Firebase/FCM and permissions management",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=35),
@@ -408,7 +408,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Offline Data Synchronization",
-            "description": "Système de synchronisation offline avec résolution de conflits et mise en queue",
+            "description": "Offline synchronization system with conflict resolution and queuing",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=45),
@@ -418,7 +418,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "User Authentication Mobile",
-            "description": "Authentification mobile avec biométrie, SSO et gestion sécurisée des tokens",
+            "description": "Mobile authentication with biometrics, SSO and secure token management",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=40),
@@ -430,7 +430,7 @@ def create_demo_tasks(session, users, projects):
         # API Documentation Portal tasks (project[2])
         {
             "title": "OpenAPI 3.0 Specification",
-            "description": "Documentation complète des endpoints API avec OpenAPI 3.0, exemples et schémas de validation",
+            "description": "Complete API endpoints documentation with OpenAPI 3.0, examples and validation schemas",
             "status": TaskStatus.DONE,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() - timedelta(days=15),
@@ -443,7 +443,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Interactive API Explorer",
-            "description": "Portail développeur interactif avec tests d'API en temps réel et génération de code",
+            "description": "Interactive developer portal with real-time API testing and code generation",
             "status": TaskStatus.IN_PROGRESS,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=20),
@@ -454,7 +454,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "SDK Generation & Distribution",
-            "description": "Génération automatique des SDKs Python, JavaScript, Go avec distribution via npm/PyPI",
+            "description": "Automatic SDK generation for Python, JavaScript, Go with distribution via npm/PyPI",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.LOW,
             "due_date": datetime.now() + timedelta(days=35),
@@ -464,7 +464,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Developer Onboarding Guide",
-            "description": "Guides complets pour développeurs avec tutoriels, exemples pratiques et meilleures pratiques",
+            "description": "Complete developer guides with tutorials, practical examples and best practices",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.LOW,
             "due_date": datetime.now() + timedelta(days=38),
@@ -476,7 +476,7 @@ def create_demo_tasks(session, users, projects):
         # DevOps Pipeline tasks (project[3]) - COMPLETED
         {
             "title": "Docker Multi-stage Build",
-            "description": "Containerisation avec Docker multi-stage builds, optimisation de taille et sécurité",
+            "description": "Containerization with Docker multi-stage builds, size optimization and security",
             "status": TaskStatus.DONE,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() - timedelta(days=80),
@@ -489,7 +489,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Kubernetes Deployment",
-            "description": "Déploiement sur cluster Kubernetes avec Helm charts, auto-scaling et health checks",
+            "description": "Kubernetes cluster deployment with Helm charts, auto-scaling and health checks",
             "status": TaskStatus.DONE,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() - timedelta(days=60),
@@ -502,7 +502,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "CI/CD Pipeline GitHub Actions",
-            "description": "Pipeline complet avec tests automatisés, sécurité, déploiement et rollback automatique",
+            "description": "Complete pipeline with automated tests, security, deployment and automatic rollback",
             "status": TaskStatus.DONE,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() - timedelta(days=45),
@@ -515,7 +515,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Monitoring & Alerting",
-            "description": "Setup Prometheus, Grafana, AlertManager avec dashboards personnalisés et alertes intelligentes",
+            "description": "Setup Prometheus, Grafana, AlertManager with custom dashboards and intelligent alerts",
             "status": TaskStatus.DONE,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() - timedelta(days=25),
@@ -530,7 +530,7 @@ def create_demo_tasks(session, users, projects):
         # Analytics Dashboard tasks (project[4])
         {
             "title": "Data Pipeline Architecture",
-            "description": "Architecture pipeline de données avec Apache Airflow pour l'ingestion et transformation",
+            "description": "Data pipeline architecture with Apache Airflow for ingestion and transformation",
             "status": TaskStatus.IN_PROGRESS,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=10),
@@ -541,7 +541,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Real-time Data Visualization",
-            "description": "Graphiques interactifs avec D3.js et mise à jour temps réel via WebSocket",
+            "description": "Interactive charts with D3.js and real-time updates via WebSocket",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=25),
@@ -551,7 +551,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Custom Report Builder",
-            "description": "Constructeur de rapports drag-and-drop avec filtres avancés et export multi-format",
+            "description": "Drag-and-drop report builder with advanced filters and multi-format export",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=40),
@@ -561,7 +561,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Automated Alert System",
-            "description": "Système d'alertes automatiques basé sur des seuils personnalisables et ML",
+            "description": "Automatic alert system based on customizable thresholds and ML",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.LOW,
             "due_date": datetime.now() + timedelta(days=50),
@@ -573,7 +573,7 @@ def create_demo_tasks(session, users, projects):
         # Security Audit & Compliance tasks (project[5])
         {
             "title": "OWASP Security Assessment",
-            "description": "Analyse complète des vulnérabilités OWASP Top 10 avec tests automatisés et manuels",
+            "description": "Complete OWASP Top 10 vulnerability analysis with automated and manual tests",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=12),
@@ -583,7 +583,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Penetration Testing",
-            "description": "Tests de pénétration sur l'infrastructure et applications avec rapport détaillé",
+            "description": "Penetration testing on infrastructure and applications with detailed report",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=20),
@@ -593,7 +593,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "GDPR Compliance Review",
-            "description": "Audit de conformité RGPD avec recommandations et mise en place des mesures",
+            "description": "GDPR compliance audit with recommendations and implementation of measures",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=30),
@@ -603,7 +603,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Security Documentation",
-            "description": "Documentation complète des pratiques de sécurité et formation des équipes",
+            "description": "Complete documentation of security practices and team training",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=40),
@@ -615,7 +615,7 @@ def create_demo_tasks(session, users, projects):
         # Microservices Architecture tasks (project[6])
         {
             "title": "Service Decomposition Strategy",
-            "description": "Analyse et définition de la stratégie de décomposition en microservices",
+            "description": "Analysis and definition of microservices decomposition strategy",
             "status": TaskStatus.IN_PROGRESS,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=5),
@@ -626,7 +626,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "API Gateway Implementation",
-            "description": "Mise en place de l'API Gateway avec routing, rate limiting et authentication",
+            "description": "API Gateway implementation with routing, rate limiting and authentication",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=20),
@@ -636,7 +636,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Service Mesh Setup",
-            "description": "Configuration d'Istio pour la communication inter-services et observabilité",
+            "description": "Istio configuration for inter-service communication and observability",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=35),
@@ -646,7 +646,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Database per Service",
-            "description": "Migration vers une architecture database-per-service avec gestion des transactions",
+            "description": "Migration to database-per-service architecture with transaction management",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=50),
@@ -656,7 +656,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Event-Driven Communication",
-            "description": "Implémentation de la communication asynchrone avec Apache Kafka",
+            "description": "Asynchronous communication implementation with Apache Kafka",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=60),
@@ -668,7 +668,7 @@ def create_demo_tasks(session, users, projects):
         # Customer Support Portal tasks (project[7])
         {
             "title": "Chatbot AI Development",
-            "description": "Développement d'un chatbot IA avec NLP pour le support client automatisé",
+            "description": "AI chatbot development with NLP for automated customer support",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=30),
@@ -678,7 +678,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Ticket Management System",
-            "description": "Système de gestion des tickets avec workflow personnalisable et SLA tracking",
+            "description": "Ticket management system with customizable workflow and SLA tracking",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=35),
@@ -688,7 +688,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Knowledge Base CMS",
-            "description": "Système de gestion de contenu pour la base de connaissances avec recherche avancée",
+            "description": "Content management system for knowledge base with advanced search",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=45),
@@ -698,7 +698,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Customer Satisfaction Analytics",
-            "description": "Système d'analytics pour mesurer la satisfaction client et générer des insights",
+            "description": "Analytics system to measure customer satisfaction and generate insights",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.LOW,
             "due_date": datetime.now() + timedelta(days=70),
@@ -710,7 +710,7 @@ def create_demo_tasks(session, users, projects):
         # Data Warehouse & ETL tasks (project[8])
         {
             "title": "Data Warehouse Schema Design",
-            "description": "Conception du schéma dimensionnel pour le data warehouse avec tables de faits et dimensions",
+            "description": "Dimensional schema design for data warehouse with fact and dimension tables",
             "status": TaskStatus.IN_PROGRESS,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=8),
@@ -721,7 +721,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "ETL Pipeline with Airflow",
-            "description": "Développement des pipelines ETL avec Apache Airflow pour l'ingestion multi-sources",
+            "description": "ETL pipeline development with Apache Airflow for multi-source ingestion",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=25),
@@ -731,7 +731,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Data Quality Framework",
-            "description": "Framework de qualité des données avec validation, nettoyage et monitoring",
+            "description": "Data quality framework with validation, cleaning and monitoring",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=40),
@@ -741,7 +741,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "BI Dashboard Suite",
-            "description": "Suite de dashboards business intelligence avec drill-down et export avancé",
+            "description": "Business intelligence dashboard suite with drill-down and advanced export",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=65),
@@ -753,7 +753,7 @@ def create_demo_tasks(session, users, projects):
         # Machine Learning Platform tasks (project[9])
         {
             "title": "MLOps Infrastructure Setup",
-            "description": "Setup de l'infrastructure MLOps avec MLflow, Kubeflow et model registry",
+            "description": "MLOps infrastructure setup with MLflow, Kubeflow and model registry",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=45),
@@ -763,7 +763,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Automated Model Training",
-            "description": "Pipeline d'entraînement automatisé avec hyperparameter tuning et validation croisée",
+            "description": "Automated training pipeline with hyperparameter tuning and cross-validation",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=60),
@@ -773,7 +773,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Model Deployment & Serving",
-            "description": "Système de déploiement automatisé des modèles avec versioning et rollback",
+            "description": "Automated model deployment system with versioning and rollback",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=80),
@@ -783,7 +783,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "A/B Testing Framework",
-            "description": "Framework pour A/B testing des modèles ML avec métriques statistiques",
+            "description": "Framework for A/B testing ML models with statistical metrics",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.LOW,
             "due_date": datetime.now() + timedelta(days=100),
@@ -795,7 +795,7 @@ def create_demo_tasks(session, users, projects):
         # Performance Optimization tasks (project[10]) - COMPLETED
         {
             "title": "Frontend Performance Audit",
-            "description": "Audit complet des performances frontend avec Lighthouse et Web Vitals",
+            "description": "Complete frontend performance audit with Lighthouse and Web Vitals",
             "status": TaskStatus.DONE,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() - timedelta(days=45),
@@ -808,7 +808,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Lazy Loading Implementation",
-            "description": "Implémentation du lazy loading pour images, components et routes",
+            "description": "Lazy loading implementation for images, components and routes",
             "status": TaskStatus.DONE,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() - timedelta(days=35),
@@ -821,7 +821,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "CDN & Caching Strategy",
-            "description": "Mise en place du CDN CloudFront et stratégie de cache Redis optimisée",
+            "description": "CloudFront CDN setup and optimized Redis cache strategy",
             "status": TaskStatus.DONE,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() - timedelta(days=25),
@@ -834,7 +834,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Database Query Optimization",
-            "description": "Optimisation des requêtes SQL avec indexation et analyse des performances",
+            "description": "SQL query optimization with indexing and performance analysis",
             "status": TaskStatus.DONE,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() - timedelta(days=15),
@@ -849,7 +849,7 @@ def create_demo_tasks(session, users, projects):
         # Multi-tenant SaaS Platform tasks (project[11])
         {
             "title": "Multi-tenancy Architecture Design",
-            "description": "Conception de l'architecture multi-tenant avec isolation des données et sécurité",
+            "description": "Multi-tenant architecture design with data isolation and security",
             "status": TaskStatus.IN_PROGRESS,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=15),
@@ -860,7 +860,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Tenant Onboarding System",
-            "description": "Système d'onboarding automatisé pour nouveaux tenants avec provisioning",
+            "description": "Automated onboarding system for new tenants with provisioning",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=30),
@@ -870,7 +870,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Billing & Subscription Management",
-            "description": "Système de facturation automatisée avec gestion des abonnements et métriques d'usage",
+            "description": "Automated billing system with subscription management and usage metrics",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.HIGH,
             "due_date": datetime.now() + timedelta(days=45),
@@ -880,7 +880,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Tenant-specific Customization",
-            "description": "Système de personnalisation par tenant : thèmes, configurations et branding",
+            "description": "Per-tenant customization system: themes, configurations and branding",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=60),
@@ -890,7 +890,7 @@ def create_demo_tasks(session, users, projects):
         },
         {
             "title": "Usage Analytics & Reporting",
-            "description": "Analytics d'usage par tenant avec rapports détaillés et alertes de seuil",
+            "description": "Per-tenant usage analytics with detailed reports and threshold alerts",
             "status": TaskStatus.TODO,
             "priority": TaskPriority.MEDIUM,
             "due_date": datetime.now() + timedelta(days=75),
@@ -907,32 +907,32 @@ def create_demo_tasks(session, users, projects):
         tasks.append(task)
     
     session.commit()
-    print(f"✅ {len(tasks)} tâches créées")
+    print(f"✅ {len(tasks)} tasks created")
     return tasks
 
 def print_summary(users, projects, tasks):
     """Print initialization summary."""
     print("\n" + "=" * 80)
-    print("🎉 INITIALISATION SIMPLE TERMINÉE AVEC SUCCÈS")
+    print("🎉 SIMPLE INITIALIZATION COMPLETED SUCCESSFULLY")
     print("=" * 80)
     
-    print("\n📊 RÉSUMÉ DES DONNÉES CRÉÉES:")
-    print(f"├── Utilisateurs : {len(users)}")
-    print(f"├── Projets : {len(projects)}")
-    print(f"└── Tâches : {len(tasks)}")
+    print("\n📊 SUMMARY OF CREATED DATA:")
+    print(f"├── Users: {len(users)}")
+    print(f"├── Projects: {len(projects)}")
+    print(f"└── Tasks: {len(tasks)}")
     
     # Calculate statistics
     budget_total = sum(p.budget or 0 for p in projects)
     completed_tasks = sum(1 for t in tasks if t.is_completed)
     in_progress_tasks = sum(1 for t in tasks if t.status.value == 'IN_PROGRESS')
     
-    print(f"\n💰 STATISTIQUES BUSINESS:")
-    print(f"├── Budget total : {budget_total:,}€")
-    print(f"├── Tâches terminées : {completed_tasks}")
-    print(f"├── Tâches en cours : {in_progress_tasks}")
-    print(f"└── Taux de completion : {(completed_tasks/len(tasks)*100):.1f}%")
+    print(f"\n💰 BUSINESS STATISTICS:")
+    print(f"├── Total budget: €{budget_total:,}")
+    print(f"├── Completed tasks: {completed_tasks}")
+    print(f"├── In progress tasks: {in_progress_tasks}")
+    print(f"└── Completion rate: {(completed_tasks/len(tasks)*100):.1f}%")
     
-    print("\n🔑 COMPTES DE DÉMONSTRATION:")
+    print("\n🔑 DEMO ACCOUNTS:")
     print("├── Admin : admin@example.com / admin123")
     print("├── Manager : manager@example.com / manager123")
     print("├── John Doe : john.doe@example.com / user123")
@@ -940,14 +940,14 @@ def print_summary(users, projects, tasks):
     print("├── Developer : developer@example.com / dev123")
     print("└── Tester : tester@example.com / test123")
     
-    print("\n🌐 ACCÈS À L'APPLICATION:")
+    print("\n🌐 APPLICATION ACCESS:")
     print("├── Frontend : http://localhost:3000")
     print("├── API Backend : http://localhost:8000")
     print("├── Documentation API : http://localhost:8000/docs")
     print("└── Alternative docs : http://localhost:8000/redoc")
     
     print("\n" + "=" * 80)
-    print("🚀 PROJET PRÊT POUR LE DÉVELOPPEMENT !")
+    print("🚀 PROJECT READY FOR DEVELOPMENT!")
     print("=" * 80)
 
 def main():
@@ -956,19 +956,19 @@ def main():
     
     # Get database configuration
     database_url = get_database_url()
-    print(f"🔗 URL de la base de données : {database_url}")
+    print(f"🔗 Database URL: {database_url}")
     
     # Create database engine
     engine = create_engine(database_url)
     
     # Wait for database to be ready
     if not wait_for_database(engine):
-        print("❌ Impossible de se connecter à la base de données")
+        print("❌ Unable to connect to database")
         sys.exit(1)
     
     # Create database schema
     if not create_database_schema(engine):
-        print("❌ Échec de la création du schéma")
+        print("❌ Schema creation failed")
         sys.exit(1)
     
     # Create session
@@ -985,11 +985,11 @@ def main():
         print_summary(users, projects, tasks)
         
         # Recommend backend restart for cache clearing
-        print("\n💡 RECOMMANDATION :")
-        print("└── Redémarrez le backend pour vider le cache : docker-compose restart backend")
+        print("\n💡 RECOMMENDATION:")
+        print("└── Restart backend to clear cache: docker-compose restart backend")
         
     except Exception as e:
-        print(f"❌ Erreur lors de l'initialisation : {e}")
+        print(f"❌ Initialization error: {e}")
         session.rollback()
         raise
     finally:

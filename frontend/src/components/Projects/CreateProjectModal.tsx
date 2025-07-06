@@ -189,6 +189,7 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                 id="budget"
                 name="budget"
                 min="0"
+                step="1"
                 value={formData.budget || ''}
                 onChange={handleChange}
                 className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"

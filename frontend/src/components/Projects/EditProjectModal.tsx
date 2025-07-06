@@ -53,8 +53,8 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({
       newErrors.description = 'Description is required';
     }
 
-    if (formData.budget && isNaN(Number(formData.budget))) {
-      newErrors.budget = 'Budget must be a valid number';
+    if (formData.budget && (isNaN(Number(formData.budget)) || !Number.isInteger(Number(formData.budget)))) {
+      newErrors.budget = 'Budget must be a valid integer';
     }
 
     setErrors(newErrors);
@@ -74,7 +74,7 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({
         description: formData.description,
         status: formData.status as any,
         priority: formData.priority as any,
-        budget: formData.budget ? parseFloat(formData.budget) : undefined,
+        budget: formData.budget ? parseInt(formData.budget) : undefined,
       });
       
       setErrors({});
@@ -220,9 +220,9 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({
                       className={`block w-full pl-7 pr-3 py-2 border ${
                         errors.budget ? 'border-red-300' : 'border-gray-300'
                       } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                      placeholder="0.00"
+                      placeholder="0"
                       min="0"
-                      step="0.01"
+                      step="1"
                     />
                   </div>
                   {errors.budget && (

@@ -8,12 +8,14 @@ import { PlusIcon, FolderIcon, PencilIcon, TrashIcon, EyeIcon } from '@heroicons
 import CreateProjectModal from './CreateProjectModal';
 import EditProjectModal from './EditProjectModal';
 import DeleteProjectModal from './DeleteProjectModal';
+import ViewProjectModal from './ViewProjectModal';
 
 const ProjectList: React.FC = () => {
   const { projects, fetchProjects, isLoading } = useProjectStore();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [deletingProject, setDeletingProject] = useState<Project | null>(null);
+  const [viewingProject, setViewingProject] = useState<Project | null>(null);
 
   useEffect(() => {
     fetchProjects();
@@ -134,7 +136,7 @@ const ProjectList: React.FC = () => {
                 {project.budget && (
                   <div className="mb-4">
                     <span className="text-sm text-gray-600">
-                      Budget: <span className="font-medium">${project.budget.toLocaleString()}</span>
+                      Budget: <span className="font-medium">€{project.budget.toLocaleString()}</span>
                     </span>
                   </div>
                 )}
@@ -144,8 +146,7 @@ const ProjectList: React.FC = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      // View project details (placeholder for now)
-                      console.log('View project:', project.id);
+                      setViewingProject(project);
                     }}
                     className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
                     title="View project"
@@ -198,6 +199,14 @@ const ProjectList: React.FC = () => {
           isOpen={!!deletingProject}
           onClose={() => setDeletingProject(null)}
           project={deletingProject}
+        />
+      )}
+      
+      {viewingProject && (
+        <ViewProjectModal
+          isOpen={!!viewingProject}
+          onClose={() => setViewingProject(null)}
+          project={viewingProject}
         />
       )}
     </div>
