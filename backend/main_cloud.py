@@ -263,6 +263,15 @@ async def login_form(email: str, password: str):
 async def login_json(user_data: UserLogin):
     return await _authenticate_user(user_data.email, user_data.password)
 
+@app.post("/api/v1/auth/refresh", response_model=Token)
+async def refresh_token():
+    # Simulate token refresh - should be improved with real refresh token logic
+    return Token(
+        access_token="demo_new_access_token",
+        token_type="bearer",
+        refresh_token="demo_new_refresh_token"
+    )
+
 async def _authenticate_user(email: str, password: str) -> Token:
     async with db_pool.acquire() as conn:
         user_data = await conn.fetchrow(
