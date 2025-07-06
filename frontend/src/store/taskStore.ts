@@ -3,7 +3,7 @@
  */
 import { create } from 'zustand';
 import { Task, CreateTaskData } from '@/types';
-import api from '@/lib/api';
+import api from '@/lib/api.ts';
 
 interface TaskState {
   tasks: Task[];
