@@ -180,20 +180,38 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         
         return User(**dict(user_data))
 
-# Health check
+# Simple health check pour Railway (sans DB)
 @app.get("/health")
 async def health_check():
+    return {
+        "status": "healthy", 
+        "timestamp": datetime.utcnow(),
+        "environment": "cloud",
+        "service": "platform-api"
+    }
+
+# Health check complet avec base de données
+@app.get("/health/full")
+async def full_health_check():
     try:
         # Test database connection
-        async with db_pool.acquire() as conn:
-            await conn.fetchval("SELECT 1")
-        
-        return {
-            "status": "healthy", 
-            "timestamp": datetime.utcnow(),
-            "database": "connected",
-            "environment": "cloud"
-        }
+        if db_pool:
+            async with db_pool.acquire() as conn:
+                await conn.fetchval("SELECT 1")
+            
+            return {
+                "status": "healthy", 
+                "timestamp": datetime.utcnow(),
+                "database": "connected",
+                "environment": "cloud"
+            }
+        else:
+            return {
+                "status": "starting",
+                "timestamp": datetime.utcnow(), 
+                "database": "initializing",
+                "environment": "cloud"
+            }
     except Exception as e:
         return {
             "status": "unhealthy", 
@@ -203,7 +221,7 @@ async def health_check():
             "environment": "cloud"
         }
 
-# Simple health check sans DB (pour Railway)
+# Simple root endpoint
 @app.get("/")
 async def root():
     return {
