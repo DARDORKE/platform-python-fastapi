@@ -89,6 +89,24 @@ db-seed: ## Charge les données de test
 	$(DOCKER_COMPOSE) exec $(BACKEND_CONTAINER) python -m app.db.init_db
 	@echo "$(GREEN)✅ Données de test chargées!$(NC)"
 
+fixtures: ## Déploie les fixtures (données de démonstration)
+	@echo "$(GREEN)🚀 Déploiement des fixtures...$(NC)"
+	@chmod +x scripts/deploy_fixtures.sh
+	@./scripts/deploy_fixtures.sh
+	@echo "$(GREEN)✅ Fixtures déployées!$(NC)"
+
+init: ## Initialise complètement le projet (BDD + fixtures)
+	@echo "$(GREEN)🚀 Initialisation complète du projet...$(NC)"
+	@chmod +x scripts/init_project.sh
+	@./scripts/init_project.sh
+	@echo "$(GREEN)✅ Projet initialisé!$(NC)"
+
+quick-init: ## Initialise le projet sans confirmation
+	@echo "$(GREEN)🚀 Initialisation rapide du projet...$(NC)"
+	@chmod +x scripts/init_project.sh
+	@./scripts/init_project.sh --yes
+	@echo "$(GREEN)✅ Projet initialisé!$(NC)"
+
 db-reset: ## Remet à zéro la base de données
 	@echo "$(YELLOW)⚠️ Remise à zéro de la base de données...$(NC)"
 	$(DOCKER_COMPOSE) exec $(BACKEND_CONTAINER) alembic downgrade base
