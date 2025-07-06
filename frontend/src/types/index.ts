@@ -28,7 +28,7 @@ export interface Project {
   priority: 'low' | 'medium' | 'high' | 'urgent';
   start_date?: string;
   end_date?: string;
-  budget?: number;
+  budget?: number; // Budget as integer
   owner_id: number;
   created_at: string;
   updated_at: string;
@@ -102,7 +102,7 @@ export interface CreateProjectData {
   priority?: Project['priority'];
   start_date?: string;
   end_date?: string;
-  budget?: number;
+  budget?: number; // Budget as integer
 }
 
 export interface CreateTaskData {

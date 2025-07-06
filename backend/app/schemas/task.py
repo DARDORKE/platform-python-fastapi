@@ -1,9 +1,9 @@
 """
 Task schemas for API serialization.
 """
-from typing import Optional
+from typing import Optional, Union
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from app.models.task import TaskStatus, TaskPriority
 
 
@@ -13,10 +13,21 @@ class TaskBase(BaseModel):
     description: Optional[str] = None
     status: TaskStatus = TaskStatus.TODO
     priority: TaskPriority = TaskPriority.MEDIUM
-    due_date: Optional[datetime] = None
-    estimated_hours: Optional[int] = Field(None, ge=0, le=1000)
-    actual_hours: Optional[int] = Field(None, ge=0, le=1000)
+    due_date: Optional[Union[datetime, str]] = None
+    estimated_hours: Optional[float] = Field(None, ge=0, le=1000)
+    actual_hours: Optional[float] = Field(None, ge=0, le=1000)
     project_id: Optional[int] = None
+    
+    @field_validator('due_date', mode='before')
+    @classmethod
+    def parse_due_date(cls, v):
+        """Parse date from string format YYYY-MM-DD to datetime."""
+        if isinstance(v, str):
+            try:
+                return datetime.fromisoformat(v + 'T00:00:00' if 'T' not in v else v)
+            except ValueError:
+                raise ValueError("Date must be in ISO format (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS)")
+        return v
 
 
 class TaskCreate(TaskBase):
@@ -30,10 +41,21 @@ class TaskUpdate(BaseModel):
     description: Optional[str] = None
     status: Optional[TaskStatus] = None
     priority: Optional[TaskPriority] = None
-    due_date: Optional[datetime] = None
-    estimated_hours: Optional[int] = Field(None, ge=0, le=1000)
-    actual_hours: Optional[int] = Field(None, ge=0, le=1000)
+    due_date: Optional[Union[datetime, str]] = None
+    estimated_hours: Optional[float] = Field(None, ge=0, le=1000)
+    actual_hours: Optional[float] = Field(None, ge=0, le=1000)
     project_id: Optional[int] = None
+    
+    @field_validator('due_date', mode='before')
+    @classmethod
+    def parse_due_date(cls, v):
+        """Parse date from string format YYYY-MM-DD to datetime."""
+        if isinstance(v, str):
+            try:
+                return datetime.fromisoformat(v + 'T00:00:00' if 'T' not in v else v)
+            except ValueError:
+                raise ValueError("Date must be in ISO format (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS)")
+        return v
 
 
 class TaskInDB(TaskBase):

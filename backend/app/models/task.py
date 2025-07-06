@@ -1,7 +1,7 @@
 """
 Task model for task management.
 """
-from sqlalchemy import Column, String, Text, ForeignKey, Integer, Enum, DateTime, Boolean
+from sqlalchemy import Column, String, Text, ForeignKey, Integer, Float, Enum, DateTime, Boolean
 from sqlalchemy.orm import relationship
 from enum import Enum as PyEnum
 from app.models.base import Base
@@ -34,8 +34,8 @@ class Task(Base):
     status = Column(Enum(TaskStatus), default=TaskStatus.TODO)
     priority = Column(Enum(TaskPriority), default=TaskPriority.MEDIUM)
     due_date = Column(DateTime, nullable=True)
-    estimated_hours = Column(Integer, nullable=True)
-    actual_hours = Column(Integer, nullable=True)
+    estimated_hours = Column(Float, nullable=True)
+    actual_hours = Column(Float, nullable=True)
     is_completed = Column(Boolean, default=False)
     completion_date = Column(DateTime, nullable=True)
     

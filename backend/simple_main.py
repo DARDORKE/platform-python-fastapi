@@ -91,8 +91,8 @@ class CreateProjectRequest(BaseModel):
 class CreateTaskRequest(BaseModel):
     title: str
     description: str
-    status: str = "TODO"
-    priority: str = "MEDIUM"
+    status: str = "todo"
+    priority: str = "medium"
     project_id: Optional[int] = None
 
 # Demo data
@@ -319,7 +319,7 @@ async def create_task(task_data: CreateTaskRequest):
         description=task_data.description,
         status=task_data.status,
         priority=task_data.priority,
-        is_completed=task_data.status == "DONE",
+        is_completed=task_data.status == "done",
         created_at=datetime.now()
     )
     demo_tasks.append(new_task)
@@ -336,7 +336,7 @@ async def update_task(task_id: int, task_data: CreateTaskRequest):
                 description=task_data.description,
                 status=task_data.status,
                 priority=task_data.priority,
-                is_completed=task_data.status == "DONE",
+                is_completed=task_data.status == "done",
                 created_at=task.created_at  # Keep original creation date
             )
             demo_tasks[i] = updated_task

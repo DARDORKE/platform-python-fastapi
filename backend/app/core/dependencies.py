@@ -49,7 +49,7 @@ async def get_current_user(
             # Retourner l'utilisateur depuis le cache
             import json
             user_data = json.loads(cached_user)
-            return User(**user_data)
+            return User.model_validate(user_data)
         
         # Récupérer l'utilisateur depuis la base de données
         user_service = UserService(session)
@@ -65,7 +65,7 @@ async def get_current_user(
         await redis_client.setex(
             cache_key, 
             300, 
-            user.json()
+            user.model_dump_json()
         )
         
         return user

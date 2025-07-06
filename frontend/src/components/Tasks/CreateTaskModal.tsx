@@ -22,8 +22,8 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    status: 'TODO',
-    priority: 'MEDIUM',
+    status: 'todo',
+    priority: 'medium',
     project_id: '',
   });
 
@@ -64,8 +64,8 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
       setFormData({
         title: '',
         description: '',
-        status: 'TODO',
-        priority: 'MEDIUM',
+        status: 'todo',
+        priority: 'medium',
         project_id: '',
       });
       setErrors({});
@@ -166,9 +166,9 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value="TODO">To Do</option>
-                    <option value="IN_PROGRESS">In Progress</option>
-                    <option value="DONE">Done</option>
+                    <option value="todo">To Do</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="done">Done</option>
                   </select>
                 </div>
 
@@ -184,9 +184,9 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value="LOW">Low</option>
-                    <option value="MEDIUM">Medium</option>
-                    <option value="HIGH">High</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
                   </select>
                 </div>
 

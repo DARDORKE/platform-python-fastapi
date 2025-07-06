@@ -94,7 +94,7 @@ async def create_bulk_users(
                 continue
             
             # Créer l'utilisateur
-            user = await user_service.create_user(user_data.dict())
+            user = await user_service.create_user(user_data.model_dump())
             result.success_count += 1
             result.processed_ids.append(user.id)
             
@@ -109,7 +109,7 @@ async def create_bulk_users(
     # Tâche en arrière-plan pour notification
     background_tasks.add_task(
         send_bulk_creation_notification,
-        result.dict(),
+        result.model_dump(),
         current_user.email,
         request_id
     )

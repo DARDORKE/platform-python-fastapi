@@ -1,9 +1,9 @@
 """
 Project schemas for API serialization.
 """
-from typing import Optional, List
+from typing import Optional, List, Union, Any, Dict
 from datetime import datetime
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, computed_field
 from app.models.project import ProjectStatus, ProjectPriority
 
 
@@ -13,9 +13,20 @@ class ProjectBase(BaseModel):
     description: Optional[str] = None
     status: ProjectStatus = ProjectStatus.PLANNING
     priority: ProjectPriority = ProjectPriority.MEDIUM
-    start_date: Optional[datetime] = None
-    end_date: Optional[datetime] = None
-    budget: Optional[int] = None  # Budget in cents
+    start_date: Optional[Union[datetime, str]] = None
+    end_date: Optional[Union[datetime, str]] = None
+    budget: Optional[int] = None  # Budget as integer
+    
+    @field_validator('start_date', 'end_date', mode='before')
+    @classmethod
+    def parse_date(cls, v):
+        """Parse date from string format YYYY-MM-DD to datetime."""
+        if isinstance(v, str):
+            try:
+                return datetime.fromisoformat(v + 'T00:00:00' if 'T' not in v else v)
+            except ValueError:
+                raise ValueError("Date must be in ISO format (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS)")
+        return v
 
 
 class ProjectCreate(ProjectBase):
@@ -29,9 +40,20 @@ class ProjectUpdate(BaseModel):
     description: Optional[str] = None
     status: Optional[ProjectStatus] = None
     priority: Optional[ProjectPriority] = None
-    start_date: Optional[datetime] = None
-    end_date: Optional[datetime] = None
+    start_date: Optional[Union[datetime, str]] = None
+    end_date: Optional[Union[datetime, str]] = None
     budget: Optional[int] = None
+    
+    @field_validator('start_date', 'end_date', mode='before')
+    @classmethod
+    def parse_date(cls, v):
+        """Parse date from string format YYYY-MM-DD to datetime."""
+        if isinstance(v, str):
+            try:
+                return datetime.fromisoformat(v + 'T00:00:00' if 'T' not in v else v)
+            except ValueError:
+                raise ValueError("Date must be in ISO format (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS)")
+        return v
 
 
 class ProjectInDB(ProjectBase):

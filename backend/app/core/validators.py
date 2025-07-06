@@ -127,24 +127,28 @@ class CreateUserAdvanced(BaseModel):
     birth_date: Optional[datetime] = Field(None, description="Date de naissance")
     company: Optional[str] = Field(None, max_length=100, description="Entreprise")
     
-    @validator('email')
+    @field_validator('email')
+    @classmethod
     def validate_email(cls, v):
         """Valider l'email."""
         return EmailValidator.validate_email_domain(v)
     
-    @validator('password')
+    @field_validator('password')
+    @classmethod
     def validate_password(cls, v):
         """Valider le mot de passe."""
         return PasswordValidator.validate_password_strength(v)
     
-    @validator('phone')
+    @field_validator('phone')
+    @classmethod
     def validate_phone(cls, v):
         """Valider le téléphone."""
         if v:
             return PhoneValidator.validate_phone(v)
         return v
     
-    @validator('birth_date')
+    @field_validator('birth_date')
+    @classmethod
     def validate_birth_date(cls, v):
         """Valider la date de naissance."""
         if v:
@@ -158,7 +162,8 @@ class CreateUserAdvanced(BaseModel):
         
         return v
     
-    @validator('first_name', 'last_name')
+    @field_validator('first_name', 'last_name')
+    @classmethod
     def validate_names(cls, v):
         """Valider les noms."""
         if not re.match(r'^[a-zA-ZÀ-ÿ\s\-\']+$', v):
@@ -177,35 +182,34 @@ class CreateProjectAdvanced(BaseModel):
     client_email: Optional[EmailStr] = Field(None, description="Email du client")
     priority: str = Field("medium", pattern="^(low|medium|high|urgent)$")
     
-    @validator('budget')
+    @field_validator('budget')
+    @classmethod
     def validate_budget(cls, v):
         """Valider le budget."""
         if v:
             return BudgetValidator.validate_budget_range(v)
         return v
     
-    @validator('start_date')
+    @field_validator('start_date')
+    @classmethod
     def validate_start_date(cls, v):
         """Valider la date de début."""
         if v:
             return DateValidator.validate_future_date(v)
         return v
     
-    @root_validator
-    def validate_dates(cls, values):
+    @model_validator(mode='after')
+    def validate_dates(self):
         """Valider la cohérence des dates."""
-        start_date = values.get('start_date')
-        end_date = values.get('end_date')
-        
-        if start_date and end_date:
-            if end_date <= start_date:
+        if self.start_date and self.end_date:
+            if self.end_date <= self.start_date:
                 raise ValueError("La date de fin doit être après la date de début")
             
             # Vérifier que la durée n'est pas trop longue (max 5 ans)
-            if (end_date - start_date).days > 5 * 365:
+            if (self.end_date - self.start_date).days > 5 * 365:
                 raise ValueError("La durée du projet ne peut pas dépasser 5 ans")
         
-        return values
+        return self
 
 
 class CreateTaskAdvanced(BaseModel):
@@ -218,14 +222,16 @@ class CreateTaskAdvanced(BaseModel):
     due_date: Optional[datetime] = Field(None, description="Date d'échéance")
     tags: Optional[list[str]] = Field(None, description="Tags pour la tâche")
     
-    @validator('due_date')
+    @field_validator('due_date')
+    @classmethod
     def validate_due_date(cls, v):
         """Valider la date d'échéance."""
         if v:
             return DateValidator.validate_future_date(v)
         return v
     
-    @validator('tags')
+    @field_validator('tags')
+    @classmethod
     def validate_tags(cls, v):
         """Valider les tags."""
         if v:
@@ -262,7 +268,8 @@ class SearchParams(BaseModel):
     q: Optional[str] = Field(None, min_length=1, max_length=100, description="Terme de recherche")
     fields: Optional[list[str]] = Field(None, description="Champs à rechercher")
     
-    @validator('q')
+    @field_validator('q')
+    @classmethod
     def validate_search_query(cls, v):
         """Valider la requête de recherche."""
         if v:
@@ -272,7 +279,8 @@ class SearchParams(BaseModel):
         
         return v
     
-    @validator('fields')
+    @field_validator('fields')
+    @classmethod
     def validate_search_fields(cls, v):
         """Valider les champs de recherche."""
         if v:

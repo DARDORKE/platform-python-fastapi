@@ -83,7 +83,7 @@ class UserService:
             )
         
         # Update fields
-        for field, value in user_update.dict(exclude_unset=True).items():
+        for field, value in user_update.model_dump(exclude_unset=True).items():
             setattr(db_user, field, value)
         
         await db.commit()

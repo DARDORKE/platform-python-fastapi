@@ -70,7 +70,7 @@ class TaskService:
     ) -> Task:
         """Create new task."""
         db_task = Task(
-            **task.dict(),
+            **task.model_dump(),
             owner_id=user_id,
         )
         
@@ -102,7 +102,7 @@ class TaskService:
             )
         
         # Update fields
-        for field, value in task_update.dict(exclude_unset=True).items():
+        for field, value in task_update.model_dump(exclude_unset=True).items():
             setattr(db_task, field, value)
         
         # Auto-update completion status and date

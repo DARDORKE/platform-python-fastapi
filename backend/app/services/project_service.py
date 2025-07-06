@@ -54,7 +54,7 @@ class ProjectService:
     ) -> Project:
         """Create new project."""
         db_project = Project(
-            **project.dict(),
+            **project.model_dump(),
             owner_id=user_id,
         )
         
@@ -86,7 +86,7 @@ class ProjectService:
             )
         
         # Update fields
-        for field, value in project_update.dict(exclude_unset=True).items():
+        for field, value in project_update.model_dump(exclude_unset=True).items():
             setattr(db_project, field, value)
         
         await db.commit()
