@@ -124,24 +124,24 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({
             leaveFrom="opacity-100 scale-100 translate-y-0"
             leaveTo="opacity-0 scale-95 translate-y-full sm:translate-y-0"
           >
-            <Dialog.Panel className="mx-auto max-w-2xl w-full max-h-screen sm:max-h-[90vh] overflow-y-auto bg-white rounded-t-2xl sm:rounded-2xl shadow-elegant-lg">
+            <Dialog.Panel className="mx-auto max-w-2xl w-full max-h-screen sm:max-h-[90vh] overflow-y-auto bg-white/95 backdrop-blur-xl rounded-t-2xl sm:rounded-2xl shadow-colorful border border-white/20">
               {/* Header */}
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100/50 px-4 sm:px-6 py-4 sm:py-5 border-b border-blue-200">
+              <div className="bg-gradient-to-r from-secondary-100 to-secondary-200 px-4 sm:px-6 py-4 sm:py-5 border-b border-secondary-300">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2 sm:space-x-3">
-                    <div className="p-1.5 sm:p-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg">
+                    <div className="p-1.5 sm:p-2 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl shadow-colorful">
                       <PencilIconSolid className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
                     <div>
                       <Dialog.Title className="text-lg sm:text-2xl font-bold text-gray-900">
                         Edit Task
                       </Dialog.Title>
-                      <p className="text-gray-600 text-xs sm:text-sm">Update task details and settings</p>
+                      <p className="text-gray-600 text-xs sm:text-sm">✏️ Update task details and settings</p>
                     </div>
                   </div>
                   <button
                     onClick={onClose}
-                    className="p-1.5 sm:p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-300"
+                    className="p-1.5 sm:p-2 rounded-xl text-gray-400 hover:text-danger-600 hover:bg-danger-50 transition-all duration-300 hover:scale-110"
                   >
                     <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                   </button>

@@ -50,9 +50,9 @@ const Dashboard: React.FC = () => {
       value: dashboardStats?.projects_count || 0,
       icon: FolderIcon,
       iconSolid: FolderIconSolid,
-      gradient: 'from-blue-500 to-blue-600',
-      bgColor: 'bg-blue-50',
-      textColor: 'text-blue-700',
+      gradient: 'from-primary-500 to-primary-600',
+      bgColor: 'bg-primary-50',
+      textColor: 'text-primary-700',
       change: '+12%',
       trend: 'up',
     },
@@ -61,9 +61,9 @@ const Dashboard: React.FC = () => {
       value: dashboardStats?.tasks_count || 0,
       icon: ClipboardDocumentListIcon,
       iconSolid: ClipboardIconSolid,
-      gradient: 'from-emerald-500 to-emerald-600',
-      bgColor: 'bg-emerald-50',
-      textColor: 'text-emerald-700',
+      gradient: 'from-success-500 to-success-600',
+      bgColor: 'bg-success-50',
+      textColor: 'text-success-700',
       change: '+18%',
       trend: 'up',
     },
@@ -72,9 +72,9 @@ const Dashboard: React.FC = () => {
       value: dashboardStats?.completed_tasks || 0,
       icon: CheckCircleIcon,
       iconSolid: CheckCircleIconSolid,
-      gradient: 'from-purple-500 to-purple-600',
-      bgColor: 'bg-purple-50',
-      textColor: 'text-purple-700',
+      gradient: 'from-secondary-500 to-secondary-600',
+      bgColor: 'bg-secondary-50',
+      textColor: 'text-secondary-700',
       change: '+23%',
       trend: 'up',
     },
@@ -83,9 +83,9 @@ const Dashboard: React.FC = () => {
       value: dashboardStats?.active_projects || 0,
       icon: ClockIcon,
       iconSolid: ClockIconSolid,
-      gradient: 'from-amber-500 to-amber-600',
-      bgColor: 'bg-amber-50',
-      textColor: 'text-amber-700',
+      gradient: 'from-warning-500 to-warning-600',
+      bgColor: 'bg-warning-50',
+      textColor: 'text-warning-700',
       change: '+8%',
       trend: 'up',
     },
@@ -94,16 +94,29 @@ const Dashboard: React.FC = () => {
   const recentTasks = tasks.slice(0, 5);
   const recentProjects = projects.slice(0, 5);
 
+  // Calculate dynamic progress statistics
+  const completedTasks = tasks.filter(task => task.status === 'done').length;
+  const totalTasks = tasks.length;
+  const tasksCompletionRate = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+  
+  const activeProjects = projects.filter(project => project.status === 'active').length;
+  const completedProjects = projects.filter(project => project.status === 'completed').length;
+  const totalProjects = projects.length;
+  const projectCompletionRate = totalProjects > 0 ? ((activeProjects + completedProjects) / totalProjects) * 100 : 0;
+
   return (
     <div className="space-y-8">
       {/* Welcome Header */}
       <div className="relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary-100/50 to-accent-purple/20 rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl opacity-60" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary-200/60 to-secondary-200/40 rounded-full -translate-y-1/2 translate-x-1/4 blur-3xl opacity-80" />
         <div className="relative z-10">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-4xl font-bold text-gradient mb-2">
-                Welcome back, {user?.full_name?.split(' ')[0] || 'User'}! 👋
+              <h1 className="text-4xl font-bold text-gradient-rainbow mb-2 flex items-center">
+                Welcome back, {user?.full_name?.split(' ')[0] || 'User'}!
+                <span className="ml-2 text-warning-500">
+                  <StarIcon className="h-8 w-8" />
+                </span>
               </h1>
               <p className="text-lg text-gray-600">
                 Here's your productivity overview for today
@@ -120,10 +133,10 @@ const Dashboard: React.FC = () => {
             </div>
             <div className="hidden lg:flex items-center space-x-4">
               <div className="text-right">
-                <p className="text-2xl font-bold text-gray-900">98%</p>
+                <p className="text-2xl font-bold text-gray-900">{Math.round(tasksCompletionRate)}%</p>
                 <p className="text-sm text-gray-500">Productivity</p>
               </div>
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-200">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-success-400 to-success-600 flex items-center justify-center shadow-success">
                 <ChartBarIcon className="h-8 w-8 text-white" />
               </div>
             </div>
@@ -136,7 +149,7 @@ const Dashboard: React.FC = () => {
         {stats.map((stat, index) => (
           <div
             key={stat.name}
-            className="card-elegant p-6 hover-lift group relative overflow-hidden animate-slide-in-up"
+            className="card-colorful p-6 hover-lift group relative overflow-hidden animate-slide-in-up"
             style={{ animationDelay: `${index * 0.1}s` }}
           >
             {/* Background Pattern */}
@@ -150,7 +163,7 @@ const Dashboard: React.FC = () => {
                   <stat.icon className="h-6 w-6 text-white" />
                 </div>
                 <div className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                  stat.trend === 'up' ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+                  stat.trend === 'up' ? 'bg-gradient-to-r from-success-100 to-success-200 text-success-700 ring-1 ring-success-300' : 'bg-gradient-to-r from-danger-100 to-danger-200 text-danger-700 ring-1 ring-danger-300'
                 }`}>
                   {stat.change}
                 </div>
@@ -173,18 +186,18 @@ const Dashboard: React.FC = () => {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         {/* Recent Projects */}
         <div className="xl:col-span-2">
-          <div className="card-elegant overflow-hidden animate-slide-in-up" style={{ animationDelay: '0.4s' }}>
-            <div className="bg-gradient-to-r from-primary-50 to-accent-purple/10 px-6 py-4 border-b border-gray-100">
+          <div className="card-colorful overflow-hidden animate-slide-in-up" style={{ animationDelay: '0.4s' }}>
+            <div className="bg-gradient-to-r from-primary-100 to-secondary-100 px-6 py-4 border-b border-primary-200/30">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-gradient-to-br from-primary-500 to-accent-purple rounded-lg shadow-md">
+                  <div className="p-2 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg shadow-colorful">
                     <RocketLaunchIcon className="h-5 w-5 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900">Recent Projects</h3>
                 </div>
                 <button 
                   onClick={() => navigate('/projects')}
-                  className="text-primary-600 hover:text-accent-purple transition-colors duration-300 flex items-center text-sm font-medium"
+                  className="text-primary-600 hover:text-secondary-600 transition-colors duration-300 flex items-center text-sm font-medium hover:scale-105"
                 >
                   View all
                   <ArrowRightIcon className="h-4 w-4 ml-1" />
@@ -216,7 +229,7 @@ const Dashboard: React.FC = () => {
                     <div
                       key={project.id}
                       onClick={() => navigate('/projects')}
-                      className="group p-4 rounded-xl border border-gray-100 hover:border-primary-200 hover:bg-gradient-to-r hover:from-primary-50/30 hover:to-transparent transition-all duration-300 hover:shadow-md cursor-pointer"
+                      className="group p-4 rounded-xl border border-gray-100 hover:border-primary-300 hover:bg-gradient-to-r hover:from-primary-50 hover:to-secondary-50 transition-all duration-300 hover:shadow-colorful cursor-pointer hover:-translate-y-1"
                       style={{ animationDelay: `${0.5 + index * 0.1}s` }}
                     >
                       <div className="flex items-center justify-between">
@@ -254,10 +267,10 @@ const Dashboard: React.FC = () => {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Recent Tasks */}
-          <div className="card-elegant overflow-hidden animate-slide-in-up" style={{ animationDelay: '0.6s' }}>
-            <div className="bg-gradient-to-r from-emerald-50 to-emerald-100/50 px-6 py-4 border-b border-gray-100">
+          <div className="card-colorful overflow-hidden animate-slide-in-up" style={{ animationDelay: '0.6s' }}>
+            <div className="bg-gradient-to-r from-success-100 to-success-200 px-6 py-4 border-b border-success-200/50">
               <div className="flex items-center space-x-3">
-                <div className="p-2 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg shadow-md">
+                <div className="p-2 bg-gradient-to-br from-success-500 to-success-600 rounded-lg shadow-success">
                   <BoltIcon className="h-5 w-5 text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900">Recent Tasks</h3>
@@ -281,13 +294,13 @@ const Dashboard: React.FC = () => {
                       style={{ animationDelay: `${0.7 + index * 0.1}s` }}
                     >
                       <div className="flex items-start space-x-3">
-                        <div className={`w-2 h-2 rounded-full mt-2 ${
+                        <div className={`w-2 h-2 rounded-full mt-2 shadow-sm ${
                           task.status === 'done'
-                            ? 'bg-emerald-500'
+                            ? 'bg-success-500'
                             : task.status === 'in_progress'
-                            ? 'bg-blue-500'
+                            ? 'bg-primary-500'
                             : task.status === 'review'
-                            ? 'bg-amber-500'
+                            ? 'bg-warning-500'
                             : 'bg-gray-400'
                         }`} />
                         <div className="flex-1 min-w-0">
@@ -307,10 +320,10 @@ const Dashboard: React.FC = () => {
           </div>
 
           {/* Quick Actions */}
-          <div className="card-elegant animate-slide-in-up" style={{ animationDelay: '0.8s' }}>
+          <div className="card-colorful animate-slide-in-up" style={{ animationDelay: '0.8s' }}>
             <div className="p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                <StarIcon className="h-5 w-5 text-amber-500 mr-2" />
+                <StarIcon className="h-5 w-5 text-warning-500 mr-2" />
                 Quick Actions
               </h3>
               <div className="space-y-3">
@@ -337,7 +350,7 @@ const Dashboard: React.FC = () => {
           </div>
 
           {/* Progress Summary */}
-          <div className="card-elegant animate-slide-in-up" style={{ animationDelay: '1s' }}>
+          <div className="card-colorful animate-slide-in-up" style={{ animationDelay: '1s' }}>
             <div className="p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
                 <ChartBarIcon className="h-5 w-5 text-primary-500 mr-2" />
@@ -347,19 +360,19 @@ const Dashboard: React.FC = () => {
                 <div>
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-gray-600">Tasks Completed</span>
-                    <span className="font-medium text-gray-900">8/12</span>
+                    <span className="font-medium text-gray-900">{completedTasks}/{totalTasks}</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full" style={{ width: '67%' }} />
+                    <div className="bg-gradient-to-r from-success-500 to-success-600 h-2 rounded-full shadow-sm" style={{ width: `${tasksCompletionRate}%` }} />
                   </div>
                 </div>
                 <div>
                   <div className="flex justify-between text-sm mb-2">
                     <span className="text-gray-600">Project Progress</span>
-                    <span className="font-medium text-gray-900">75%</span>
+                    <span className="font-medium text-gray-900">{Math.round(projectCompletionRate)}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-primary-500 to-primary-600 h-2 rounded-full" style={{ width: '75%' }} />
+                    <div className="bg-gradient-to-r from-primary-500 to-primary-600 h-2 rounded-full" style={{ width: `${projectCompletionRate}%` }} />
                   </div>
                 </div>
               </div>

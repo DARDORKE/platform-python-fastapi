@@ -24,39 +24,39 @@ const ProjectList: React.FC = () => {
   const getStatusColor = (status: string) => {
     switch (status.toUpperCase()) {
       case 'ACTIVE':
-        return 'bg-green-100 text-green-800';
+        return 'bg-gradient-to-r from-success-100 to-success-200 text-success-800 ring-2 ring-success-300/50';
       case 'PLANNING':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-gradient-to-r from-warning-100 to-warning-200 text-warning-800 ring-2 ring-warning-300/50';
       case 'COMPLETED':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-gradient-to-r from-primary-100 to-primary-200 text-primary-800 ring-2 ring-primary-300/50';
       case 'ON_HOLD':
-        return 'bg-orange-100 text-orange-800';
+        return 'bg-gradient-to-r from-secondary-100 to-secondary-200 text-secondary-800 ring-2 ring-secondary-300/50';
       case 'CANCELLED':
-        return 'bg-red-100 text-red-800';
+        return 'bg-gradient-to-r from-danger-100 to-danger-200 text-danger-800 ring-2 ring-danger-300/50';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 ring-2 ring-gray-300/50';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority.toUpperCase()) {
       case 'CRITICAL':
-        return 'bg-red-100 text-red-800';
+        return 'bg-gradient-to-r from-danger-100 to-danger-200 text-danger-800 ring-2 ring-danger-300/50';
       case 'HIGH':
-        return 'bg-orange-100 text-orange-800';
+        return 'bg-gradient-to-r from-warning-100 to-warning-200 text-warning-800 ring-2 ring-warning-300/50';
       case 'MEDIUM':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-gradient-to-r from-secondary-100 to-secondary-200 text-secondary-800 ring-2 ring-secondary-300/50';
       case 'LOW':
-        return 'bg-green-100 text-green-800';
+        return 'bg-gradient-to-r from-success-100 to-success-200 text-success-800 ring-2 ring-success-300/50';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 ring-2 ring-gray-300/50';
     }
   };
 
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-600 shadow-colorful"></div>
       </div>
     );
   }
@@ -65,12 +65,12 @@ const ProjectList: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Projects</h1>
+        <h1 className="text-3xl font-bold text-gradient-primary">Projects</h1>
         <button
           onClick={() => setIsCreateModalOpen(true)}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="btn-primary flex items-center"
         >
-          <PlusIcon className="-ml-1 mr-2 h-4 w-4" />
+          <PlusIcon className="h-4 w-4 mr-2" />
           New Project
         </button>
       </div>
@@ -86,9 +86,9 @@ const ProjectList: React.FC = () => {
           <div className="mt-6">
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="btn-primary flex items-center"
             >
-              <PlusIcon className="-ml-1 mr-2 h-4 w-4" />
+              <PlusIcon className="h-4 w-4 mr-2" />
               New Project
             </button>
           </div>
@@ -98,11 +98,11 @@ const ProjectList: React.FC = () => {
           {projects.map((project) => (
             <div
               key={project.id}
-              className="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow"
+              className="card-colorful overflow-hidden hover-lift group"
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-medium text-gray-900 truncate">
+                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary-700 transition-colors truncate">
                     {project.name}
                   </h3>
                   <span
@@ -148,7 +148,7 @@ const ProjectList: React.FC = () => {
                       e.stopPropagation();
                       setViewingProject(project);
                     }}
-                    className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
+                    className="p-2 text-gray-400 hover:text-primary-600 transition-all duration-300 hover:scale-110 hover:bg-primary-50 rounded-lg"
                     title="View project"
                   >
                     <EyeIcon className="h-5 w-5" />
@@ -158,7 +158,7 @@ const ProjectList: React.FC = () => {
                       e.stopPropagation();
                       setEditingProject(project);
                     }}
-                    className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
+                    className="p-2 text-gray-400 hover:text-secondary-600 transition-all duration-300 hover:scale-110 hover:bg-secondary-50 rounded-lg"
                     title="Edit project"
                   >
                     <PencilIcon className="h-5 w-5" />
@@ -168,7 +168,7 @@ const ProjectList: React.FC = () => {
                       e.stopPropagation();
                       setDeletingProject(project);
                     }}
-                    className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                    className="p-2 text-gray-400 hover:text-danger-600 transition-all duration-300 hover:scale-110 hover:bg-danger-50 rounded-lg"
                     title="Delete project"
                   >
                     <TrashIcon className="h-5 w-5" />

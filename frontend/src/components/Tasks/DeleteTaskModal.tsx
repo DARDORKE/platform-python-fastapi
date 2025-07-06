@@ -9,7 +9,14 @@ import {
   ExclamationTriangleIcon, 
   XMarkIcon, 
   CalendarIcon,
-  TrashIcon
+  TrashIcon,
+  QueueListIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  ClipboardDocumentListIcon,
+  ChartBarIcon,
+  BoltIcon,
+  FireIcon
 } from '@heroicons/react/24/outline';
 import { ExclamationTriangleIcon as ExclamationTriangleIconSolid } from '@heroicons/react/24/solid';
 
@@ -35,29 +42,29 @@ const DeleteTaskModal: React.FC<DeleteTaskModalProps> = ({
     }
   };
 
-  const getStatusEmoji = (status: string) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
       case 'todo':
-        return '📋';
+        return <QueueListIcon className="h-6 w-6 mx-auto mb-1 text-gray-400" />;
       case 'in_progress':
-        return '🔄';
+        return <ClockIcon className="h-6 w-6 mx-auto mb-1 text-gray-400" />;
       case 'done':
-        return '✅';
+        return <CheckCircleIcon className="h-6 w-6 mx-auto mb-1 text-gray-400" />;
       default:
-        return '📄';
+        return <ClipboardDocumentListIcon className="h-6 w-6 mx-auto mb-1 text-gray-400" />;
     }
   };
 
-  const getPriorityEmoji = (priority: string) => {
+  const getPriorityIcon = (priority: string) => {
     switch (priority) {
       case 'low':
-        return '🌱';
+        return <ChartBarIcon className="h-6 w-6 mx-auto mb-1 text-gray-400" />;
       case 'medium':
-        return '⚡';
+        return <BoltIcon className="h-6 w-6 mx-auto mb-1 text-gray-400" />;
       case 'high':
-        return '🔥';
+        return <FireIcon className="h-6 w-6 mx-auto mb-1 text-gray-400" />;
       default:
-        return '📌';
+        return <QueueListIcon className="h-6 w-6 mx-auto mb-1 text-gray-400" />;
     }
   };
 
@@ -139,7 +146,7 @@ const DeleteTaskModal: React.FC<DeleteTaskModalProps> = ({
                   {/* Task Details */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-gray-100">
                     <div className="text-center">
-                      <div className="text-2xl mb-1">{getStatusEmoji(task.status)}</div>
+                      {getStatusIcon(task.status)}
                       <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Status</p>
                       <p className="text-sm text-gray-900 capitalize">
                         {task.status.replace('_', ' ')}
@@ -147,7 +154,7 @@ const DeleteTaskModal: React.FC<DeleteTaskModalProps> = ({
                     </div>
 
                     <div className="text-center">
-                      <div className="text-2xl mb-1">{getPriorityEmoji(task.priority)}</div>
+                      {getPriorityIcon(task.priority)}
                       <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Priority</p>
                       <p className="text-sm text-gray-900 capitalize">{task.priority}</p>
                     </div>

@@ -84,12 +84,12 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <Dialog.Panel className="mx-auto max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-elegant-lg">
+            <Dialog.Panel className="mx-auto max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white/95 backdrop-blur-xl rounded-2xl shadow-colorful border border-white/20">
               {/* Header */}
-              <div className="bg-gradient-to-r from-primary-50 to-accent-purple/10 px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100">
+              <div className="bg-gradient-to-r from-primary-100 to-secondary-100 px-4 sm:px-6 py-4 sm:py-5 border-b border-primary-200">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2 sm:space-x-3">
-                    <div className="p-1.5 sm:p-2 bg-gradient-to-br from-primary-500 to-accent-purple rounded-xl shadow-lg">
+                    <div className="p-1.5 sm:p-2 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl shadow-colorful">
                       <RocketLaunchIcon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
                     <Dialog.Title className="text-lg sm:text-2xl font-bold text-gray-900">
@@ -98,12 +98,12 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                   </div>
                   <button
                     onClick={handleClose}
-                    className="p-1.5 sm:p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-300"
+                    className="p-1.5 sm:p-2 rounded-xl text-gray-400 hover:text-danger-600 hover:bg-danger-50 transition-all duration-300 hover:scale-110"
                   >
                     <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                   </button>
                 </div>
-                <p className="text-gray-600 mt-2 text-sm sm:text-base">Fill in the details to create your new project</p>
+                <p className="text-gray-600 mt-2 text-sm sm:text-base">🚀 Fill in the details to create your new project</p>
               </div>
 
               {/* Form */}
@@ -145,7 +145,7 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div className="space-y-2">
                     <label htmlFor="status" className="block text-sm font-semibold text-gray-700 flex items-center">
-                      <FlagIcon className="h-4 w-4 mr-2 text-primary-500" />
+                      <FlagIcon className="h-4 w-4 mr-2 text-secondary-500" />
                       Status
                     </label>
                     <select
@@ -201,7 +201,7 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
 
                   <div className="space-y-2">
                     <label htmlFor="end_date" className="block text-sm font-semibold text-gray-700 flex items-center">
-                      <CalendarIcon className="h-4 w-4 mr-2 text-red-500" />
+                      <CalendarIcon className="h-4 w-4 mr-2 text-danger-500" />
                       End Date
                     </label>
                     <input
@@ -218,7 +218,7 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                 {/* Budget */}
                 <div className="space-y-2">
                   <label htmlFor="budget" className="block text-sm font-semibold text-gray-700 flex items-center">
-                    <CurrencyEuroIcon className="h-4 w-4 mr-2 text-emerald-500" />
+                    <CurrencyEuroIcon className="h-4 w-4 mr-2 text-success-500" />
                     Budget ($)
                   </label>
                   <div className="relative">
@@ -238,11 +238,11 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
                 </div>
 
                 {/* Actions */}
-                <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4 sm:pt-6 border-t border-gray-100">
+                <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4 sm:pt-6 border-t border-gradient-to-r from-primary-200 to-secondary-200">
                   <button
                     type="button"
                     onClick={handleClose}
-                    className="btn-secondary w-full sm:w-auto order-2 sm:order-1"
+                    className="w-full sm:w-auto order-2 sm:order-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 px-6 rounded-xl transition-all duration-300 hover:scale-105"
                   >
                     Cancel
                   </button>

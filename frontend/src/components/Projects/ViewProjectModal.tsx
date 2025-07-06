@@ -38,49 +38,49 @@ const ViewProjectModal: React.FC<ViewProjectModalProps> = ({
   const getStatusBadgeColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'planning':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gradient-to-r from-warning-100 to-warning-200 text-warning-800 ring-2 ring-warning-300/50';
       case 'active':
-        return 'bg-green-100 text-green-800';
+        return 'bg-gradient-to-r from-success-100 to-success-200 text-success-800 ring-2 ring-success-300/50';
       case 'on_hold':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-gradient-to-r from-secondary-100 to-secondary-200 text-secondary-800 ring-2 ring-secondary-300/50';
       case 'completed':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-gradient-to-r from-primary-100 to-primary-200 text-primary-800 ring-2 ring-primary-300/50';
       case 'cancelled':
-        return 'bg-red-100 text-red-800';
+        return 'bg-gradient-to-r from-danger-100 to-danger-200 text-danger-800 ring-2 ring-danger-300/50';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 ring-2 ring-gray-300/50';
     }
   };
 
   const getPriorityBadgeColor = (priority: string) => {
     switch (priority.toLowerCase()) {
       case 'low':
-        return 'bg-green-100 text-green-800';
+        return 'bg-gradient-to-r from-success-100 to-success-200 text-success-800 ring-2 ring-success-300/50';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-gradient-to-r from-warning-100 to-warning-200 text-warning-800 ring-2 ring-warning-300/50';
       case 'high':
-        return 'bg-orange-100 text-orange-800';
+        return 'bg-gradient-to-r from-secondary-100 to-secondary-200 text-secondary-800 ring-2 ring-secondary-300/50';
       case 'urgent':
-        return 'bg-red-100 text-red-800';
+        return 'bg-gradient-to-r from-danger-100 to-danger-200 text-danger-800 ring-2 ring-danger-300/50';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 ring-2 ring-gray-300/50';
     }
   };
 
   const getTaskStatusBadgeColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'todo':
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 ring-2 ring-gray-300/50';
       case 'in_progress':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-gradient-to-r from-primary-100 to-primary-200 text-primary-800 ring-2 ring-primary-300/50';
       case 'review':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-gradient-to-r from-secondary-100 to-secondary-200 text-secondary-800 ring-2 ring-secondary-300/50';
       case 'done':
-        return 'bg-green-100 text-green-800';
+        return 'bg-gradient-to-r from-success-100 to-success-200 text-success-800 ring-2 ring-success-300/50';
       case 'cancelled':
-        return 'bg-red-100 text-red-800';
+        return 'bg-gradient-to-r from-danger-100 to-danger-200 text-danger-800 ring-2 ring-danger-300/50';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-gradient-to-r from-gray-100 to-gray-200 text-gray-800 ring-2 ring-gray-300/50';
     }
   };
 
@@ -89,15 +89,15 @@ const ViewProjectModal: React.FC<ViewProjectModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={onClose}></div>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity" onClick={onClose}></div>
 
         <span className="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
 
-        <div className="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full sm:p-6">
+        <div className="relative inline-block align-bottom bg-white/95 backdrop-blur-xl rounded-2xl px-4 pt-5 pb-4 text-left overflow-hidden shadow-colorful transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full sm:p-6 border border-white/20">
           <div className="absolute top-0 right-0 pt-4 pr-4">
             <button
               type="button"
-              className="bg-white rounded-md text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="bg-white/90 rounded-xl text-gray-400 hover:text-danger-600 hover:bg-danger-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-danger-500 transition-all duration-300 hover:scale-110"
               onClick={onClose}
             >
               <XMarkIcon className="h-6 w-6" />

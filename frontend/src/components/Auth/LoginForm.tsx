@@ -42,18 +42,18 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-accent-purple/10 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-100 via-white to-secondary-100 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-gradient-to-br from-primary-200/30 to-accent-purple/20 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-accent-pink/20 to-primary-300/30 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl" />
+      <div className="absolute top-0 left-0 w-72 h-72 bg-gradient-to-br from-primary-300/40 to-secondary-300/30 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-secondary-200/30 to-warning-200/20 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl" />
       
       <div className="max-w-md w-full space-y-8 relative z-10">
         {/* Header */}
         <div className="text-center animate-slide-in-up">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary-500 to-accent-purple rounded-2xl shadow-2xl shadow-primary-200 flex items-center justify-center mb-6 transform hover:scale-105 transition-transform duration-300">
+          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-2xl shadow-colorful flex items-center justify-center mb-6 transform hover:scale-105 transition-transform duration-300">
             <SparklesIcon className="h-8 w-8 text-white" />
           </div>
-          <h2 className="text-4xl font-bold text-gradient mb-2">
+          <h2 className="text-4xl font-bold text-gradient-rainbow mb-2">
             Welcome Back
           </h2>
           <p className="text-gray-600">
@@ -63,7 +63,7 @@ const LoginForm: React.FC = () => {
             Don't have an account?{' '}
             <Link
               to="/register"
-              className="font-semibold text-primary-600 hover:text-accent-purple transition-colors duration-300 hover:underline"
+              className="font-semibold text-primary-600 hover:text-secondary-600 transition-colors duration-300 hover:underline"
             >
               Create one here
             </Link>
@@ -71,12 +71,12 @@ const LoginForm: React.FC = () => {
         </div>
         
         {/* Login Card */}
-        <div className="card-elegant p-8 animate-slide-in-up" style={{ animationDelay: '0.1s' }}>
+        <div className="card-colorful p-8 animate-slide-in-up" style={{ animationDelay: '0.1s' }}>
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* Error Message */}
             {error && (
-              <div className="bg-gradient-to-r from-red-50 to-red-100 border border-red-200 text-red-700 px-4 py-3 rounded-xl flex items-center space-x-3 animate-slide-in-up">
-                <ExclamationTriangleIcon className="h-5 w-5 text-red-500 flex-shrink-0" />
+              <div className="bg-gradient-to-r from-danger-50 to-danger-100 border border-danger-200 text-danger-700 px-4 py-3 rounded-xl flex items-center space-x-3 animate-slide-in-up shadow-danger">
+                <ExclamationTriangleIcon className="h-5 w-5 text-danger-500 flex-shrink-0" />
                 <span className="text-sm">{error}</span>
               </div>
             )}
@@ -149,7 +149,7 @@ const LoginForm: React.FC = () => {
             </div>
 
             {/* Demo Accounts */}
-            <div className="bg-gradient-to-r from-primary-50/50 to-accent-purple/5 rounded-xl p-4 border border-primary-100">
+            <div className="bg-gradient-to-r from-primary-100 to-secondary-100 rounded-xl p-4 border border-primary-200 shadow-md">
               <p className="text-xs font-semibold text-gray-700 mb-2">Demo Accounts:</p>
               <div className="grid grid-cols-1 gap-1 text-xs text-gray-600">
                 <div>Admin: admin@example.com / admin123</div>
@@ -175,7 +175,7 @@ const LoginForm: React.FC = () => {
                 )}
               </span>
               {!isLoading && (
-                <div className="absolute inset-0 bg-gradient-to-r from-accent-purple to-primary-600 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-r from-secondary-500 to-primary-600 translate-x-full group-hover:translate-x-0 transition-transform duration-500" />
               )}
             </button>
             

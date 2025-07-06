@@ -34,22 +34,22 @@ export const Toast: React.FC<ToastProps> = ({
   const getTypeStyles = () => {
     switch (type) {
       case 'success':
-        return 'bg-emerald-50 border-emerald-200 text-emerald-800 shadow-emerald-100';
+        return 'bg-gradient-to-r from-success-50 to-success-100 border-success-300 text-success-800 shadow-success';
       case 'error':
-        return 'bg-red-50 border-red-200 text-red-800 shadow-red-100';
+        return 'bg-gradient-to-r from-danger-50 to-danger-100 border-danger-300 text-danger-800 shadow-danger';
       case 'warning':
-        return 'bg-amber-50 border-amber-200 text-amber-800 shadow-amber-100';
+        return 'bg-gradient-to-r from-warning-50 to-warning-100 border-warning-300 text-warning-800 shadow-warning';
       case 'info':
-        return 'bg-blue-50 border-blue-200 text-blue-800 shadow-blue-100';
+        return 'bg-gradient-to-r from-primary-50 to-primary-100 border-primary-300 text-primary-800 shadow-colorful';
       default:
-        return 'bg-gray-50 border-gray-200 text-gray-800 shadow-gray-100';
+        return 'bg-gradient-to-r from-gray-50 to-gray-100 border-gray-300 text-gray-800 shadow-md';
     }
   };
 
   return (
     <div
       className={`
-        fixed top-4 right-4 z-50 max-w-md p-4 border rounded-xl shadow-elegant backdrop-blur-sm
+        fixed top-4 right-4 z-50 max-w-md p-4 border-2 rounded-2xl backdrop-blur-xl
         transition-all duration-500 ease-in-out
         ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
         ${getTypeStyles()}
@@ -67,7 +67,7 @@ export const Toast: React.FC<ToastProps> = ({
             setIsVisible(false);
             setTimeout(() => onClose(id), 300);
           }}
-          className="ml-3 text-gray-400 hover:text-gray-600 transition-colors"
+          className="ml-3 text-gray-400 hover:text-gray-600 transition-all duration-300 hover:scale-110 hover:bg-white/50 rounded-lg p-1"
         >
           <X size={16} />
         </button>

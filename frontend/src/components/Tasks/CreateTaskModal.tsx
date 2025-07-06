@@ -116,24 +116,24 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
             leaveFrom="opacity-100 scale-100 translate-y-0"
             leaveTo="opacity-0 scale-95 translate-y-full sm:translate-y-0"
           >
-            <Dialog.Panel className="mx-auto max-w-2xl w-full max-h-screen sm:max-h-[90vh] overflow-y-auto bg-white rounded-t-2xl sm:rounded-2xl shadow-elegant-lg">
+            <Dialog.Panel className="mx-auto max-w-2xl w-full max-h-screen sm:max-h-[90vh] overflow-y-auto bg-white/95 backdrop-blur-xl rounded-t-2xl sm:rounded-2xl shadow-colorful border border-white/20">
               {/* Header */}
-              <div className="bg-gradient-to-r from-emerald-50 to-emerald-100/50 px-4 sm:px-6 py-4 sm:py-5 border-b border-emerald-200">
+              <div className="bg-gradient-to-r from-success-100 to-success-200 px-4 sm:px-6 py-4 sm:py-5 border-b border-success-300">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2 sm:space-x-3">
-                    <div className="p-1.5 sm:p-2 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl shadow-lg">
+                    <div className="p-1.5 sm:p-2 bg-gradient-to-br from-success-500 to-success-600 rounded-xl shadow-success">
                       <QueueListIconSolid className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                     </div>
                     <div>
                       <Dialog.Title className="text-lg sm:text-2xl font-bold text-gray-900">
                         Create New Task
                       </Dialog.Title>
-                      <p className="text-gray-600 text-xs sm:text-sm">Add a new task to organize your work</p>
+                      <p className="text-gray-600 text-xs sm:text-sm">✨ Add a new task to organize your work</p>
                     </div>
                   </div>
                   <button
                     onClick={onClose}
-                    className="p-1.5 sm:p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-300"
+                    className="p-1.5 sm:p-2 rounded-xl text-gray-400 hover:text-danger-600 hover:bg-danger-50 transition-all duration-300 hover:scale-110"
                   >
                     <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                   </button>
@@ -154,12 +154,12 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                     value={formData.title}
                     onChange={handleChange}
                     className={`input-elegant ${
-                      errors.title ? 'border-red-300 bg-red-50/50' : ''
+                      errors.title ? 'border-danger-300 bg-danger-50/50 ring-danger-100' : ''
                     }`}
                     placeholder="Enter a clear, descriptive task title..."
                   />
                   {errors.title && (
-                    <div className="flex items-center space-x-2 text-red-600">
+                    <div className="flex items-center space-x-2 text-danger-600">
                       <ExclamationCircleIcon className="h-4 w-4" />
                       <p className="text-sm">{errors.title}</p>
                     </div>
@@ -178,12 +178,12 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                     value={formData.description}
                     onChange={handleChange}
                     className={`input-elegant resize-none ${
-                      errors.description ? 'border-red-300 bg-red-50/50' : ''
+                      errors.description ? 'border-danger-300 bg-danger-50/50 ring-danger-100' : ''
                     }`}
                     placeholder="Describe what needs to be done, include any important details..."
                   />
                   {errors.description && (
-                    <div className="flex items-center space-x-2 text-red-600">
+                    <div className="flex items-center space-x-2 text-danger-600">
                       <ExclamationCircleIcon className="h-4 w-4" />
                       <p className="text-sm">{errors.description}</p>
                     </div>
@@ -194,7 +194,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div className="space-y-2">
                     <label htmlFor="status" className="block text-sm font-semibold text-gray-700 flex items-center">
-                      <FlagIcon className="h-4 w-4 mr-2 text-emerald-500" />
+                      <FlagIcon className="h-4 w-4 mr-2 text-success-500" />
                       Status
                     </label>
                     <select
@@ -254,11 +254,11 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                 </div>
 
                 {/* Actions */}
-                <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-gray-100">
+                <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-gradient-to-r from-success-200 to-primary-200">
                   <button
                     type="button"
                     onClick={onClose}
-                    className="btn-secondary w-full sm:w-auto"
+                    className="w-full sm:w-auto bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2.5 px-6 rounded-xl transition-all duration-300 hover:scale-105"
                   >
                     Cancel
                   </button>

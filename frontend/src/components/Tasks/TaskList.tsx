@@ -25,6 +25,7 @@ import {
   ListBulletIcon,
   AdjustmentsHorizontalIcon,
   SparklesIcon,
+  BoltIcon,
 } from '@heroicons/react/24/outline';
 import {
   CheckCircleIcon as CheckCircleIconSolid,
@@ -66,19 +67,19 @@ const TaskList: React.FC = () => {
       case 'done':
         return { 
           icon: <CheckCircleIconSolid className="h-5 w-5" />, 
-          color: 'text-emerald-600', 
-          bg: 'bg-emerald-50',
+          color: 'text-success-600', 
+          bg: 'bg-success-50',
           badge: 'badge-success',
-          emoji: '✅',
+          iconComponent: <CheckCircleIconSolid className="h-4 w-4" />,
           label: 'Completed'
         };
       case 'in_progress':
         return { 
           icon: <ClockIconSolid className="h-5 w-5" />, 
-          color: 'text-blue-600', 
-          bg: 'bg-blue-50',
+          color: 'text-primary-600', 
+          bg: 'bg-primary-50',
           badge: 'badge-info',
-          emoji: '🔄',
+          iconComponent: <ClockIconSolid className="h-4 w-4" />,
           label: 'In Progress'
         };
       case 'todo':
@@ -87,7 +88,7 @@ const TaskList: React.FC = () => {
           color: 'text-gray-600', 
           bg: 'bg-gray-50',
           badge: 'bg-gray-100 text-gray-800',
-          emoji: '📋',
+          iconComponent: <QueueListIconSolid className="h-4 w-4" />,
           label: 'To Do'
         };
       default:
@@ -96,7 +97,7 @@ const TaskList: React.FC = () => {
           color: 'text-gray-600', 
           bg: 'bg-gray-50',
           badge: 'bg-gray-100 text-gray-800',
-          emoji: '❓',
+          iconComponent: <ExclamationTriangleIconSolid className="h-4 w-4" />,
           label: status
         };
     }
@@ -107,31 +108,31 @@ const TaskList: React.FC = () => {
       case 'high':
         return { 
           badge: 'badge-danger', 
-          emoji: '🔥', 
-          color: 'text-red-600',
-          bg: 'bg-red-50',
-          border: 'border-red-200'
+          iconComponent: <FireIcon className="h-4 w-4" />, 
+          color: 'text-danger-600',
+          bg: 'bg-danger-50',
+          border: 'border-danger-200'
         };
       case 'medium':
         return { 
           badge: 'badge-warning', 
-          emoji: '⚡', 
-          color: 'text-amber-600',
-          bg: 'bg-amber-50',
-          border: 'border-amber-200'
+          iconComponent: <BoltIcon className="h-4 w-4" />, 
+          color: 'text-warning-600',
+          bg: 'bg-warning-50',
+          border: 'border-warning-200'
         };
       case 'low':
         return { 
           badge: 'badge-success', 
-          emoji: '🌱', 
-          color: 'text-emerald-600',
-          bg: 'bg-emerald-50',
-          border: 'border-emerald-200'
+          iconComponent: <ChartBarIcon className="h-4 w-4" />, 
+          color: 'text-success-600',
+          bg: 'bg-success-50',
+          border: 'border-success-200'
         };
       default:
         return { 
           badge: 'bg-gray-100 text-gray-800', 
-          emoji: '📌', 
+          iconComponent: <QueueListIcon className="h-4 w-4" />, 
           color: 'text-gray-600',
           bg: 'bg-gray-50',
           border: 'border-gray-200'
@@ -171,7 +172,7 @@ const TaskList: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gradient flex items-center">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gradient-rainbow flex items-center">
             <QueueListIconSolid className="h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 text-primary-600 mr-2 sm:mr-3" />
             Tasks
           </h1>
@@ -193,7 +194,7 @@ const TaskList: React.FC = () => {
       </div>
 
       {/* Filters and Controls */}
-      <div className="card-elegant p-4 sm:p-6">
+      <div className="card-colorful p-4 sm:p-6">
         <div className="flex flex-col gap-4">
           {/* Search */}
           <div className="w-full">
@@ -366,12 +367,12 @@ const TaskList: React.FC = () => {
                             {task.title}
                           </h3>
                           <div className="flex items-center gap-2">
-                            <span className={`badge ${statusConfig.badge} text-xs`}>
-                              <span className="mr-1">{statusConfig.emoji}</span>
+                            <span className={`badge ${statusConfig.badge} text-xs flex items-center`}>
+                              <span className="mr-1">{statusConfig.iconComponent}</span>
                               {statusConfig.label}
                             </span>
-                            <span className={`badge ${priorityConfig.badge} text-xs`}>
-                              <span className="mr-1">{priorityConfig.emoji}</span>
+                            <span className={`badge ${priorityConfig.badge} text-xs flex items-center`}>
+                              <span className="mr-1">{priorityConfig.iconComponent}</span>
                               {task.priority}
                             </span>
                           </div>
@@ -405,7 +406,7 @@ const TaskList: React.FC = () => {
                           e.stopPropagation();
                           setEditingTask(task);
                         }}
-                        className="p-1.5 sm:p-2 rounded-lg hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                        className="p-1.5 sm:p-2 rounded-lg hover:bg-primary-50 hover:text-primary-600 transition-all duration-300 hover:scale-110"
                         title="Edit task"
                       >
                         <PencilIcon className="h-4 w-4" />
@@ -415,7 +416,7 @@ const TaskList: React.FC = () => {
                           e.stopPropagation();
                           setDeletingTask(task);
                         }}
-                        className="p-1.5 sm:p-2 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors"
+                        className="p-1.5 sm:p-2 rounded-lg hover:bg-danger-50 hover:text-danger-600 transition-all duration-300 hover:scale-110"
                         title="Delete task"
                       >
                         <TrashIcon className="h-4 w-4" />
@@ -447,12 +448,13 @@ const TaskList: React.FC = () => {
                       <div className={`p-1.5 sm:p-2 rounded-lg ${statusConfig.bg} ${statusConfig.color}`}>
                         {statusConfig.icon}
                       </div>
-                      <span className={`badge ${statusConfig.badge} text-xs`}>
-                        {statusConfig.emoji} {statusConfig.label}
+                      <span className={`badge ${statusConfig.badge} text-xs flex items-center`}>
+                        <span className="mr-1">{statusConfig.iconComponent}</span>
+                        {statusConfig.label}
                       </span>
                     </div>
-                    <span className={`badge ${priorityConfig.badge} text-xs self-start`}>
-                      {priorityConfig.emoji}
+                    <span className={`badge ${priorityConfig.badge} text-xs self-start flex items-center`}>
+                      {priorityConfig.iconComponent}
                     </span>
                   </div>
                   
@@ -480,7 +482,7 @@ const TaskList: React.FC = () => {
                           e.stopPropagation();
                           setEditingTask(task);
                         }}
-                        className="p-1.5 sm:p-2 rounded-lg hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                        className="p-1.5 sm:p-2 rounded-lg hover:bg-primary-50 hover:text-primary-600 transition-all duration-300 hover:scale-110"
                       >
                         <PencilIcon className="h-3 w-3 sm:h-4 sm:w-4" />
                       </button>
@@ -489,7 +491,7 @@ const TaskList: React.FC = () => {
                           e.stopPropagation();
                           setDeletingTask(task);
                         }}
-                        className="p-1.5 sm:p-2 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors"
+                        className="p-1.5 sm:p-2 rounded-lg hover:bg-danger-50 hover:text-danger-600 transition-all duration-300 hover:scale-110"
                       >
                         <TrashIcon className="h-3 w-3 sm:h-4 sm:w-4" />
                       </button>
@@ -534,7 +536,7 @@ const TaskList: React.FC = () => {
                             {task.title}
                           </h4>
                           <span className={`text-lg ${priorityConfig.color}`}>
-                            {priorityConfig.emoji}
+                            {priorityConfig.iconComponent}
                           </span>
                         </div>
                         
@@ -586,33 +588,33 @@ const TaskList: React.FC = () => {
             label: 'Total Tasks', 
             value: tasks.length, 
             icon: QueueListIcon, 
-            color: 'text-blue-600',
-            bg: 'bg-blue-50',
-            gradient: 'from-blue-500 to-blue-600'
+            color: 'text-primary-600',
+            bg: 'bg-primary-50',
+            gradient: 'from-primary-500 to-primary-600'
           },
           { 
             label: 'Completed', 
             value: tasks.filter(t => t.status === 'done').length, 
             icon: CheckCircleIcon, 
-            color: 'text-emerald-600',
-            bg: 'bg-emerald-50',
-            gradient: 'from-emerald-500 to-emerald-600'
+            color: 'text-success-600',
+            bg: 'bg-success-50',
+            gradient: 'from-success-500 to-success-600'
           },
           { 
             label: 'In Progress', 
             value: tasks.filter(t => t.status === 'in_progress').length, 
             icon: ClockIcon, 
-            color: 'text-amber-600',
-            bg: 'bg-amber-50',
-            gradient: 'from-amber-500 to-amber-600'
+            color: 'text-warning-600',
+            bg: 'bg-warning-50',
+            gradient: 'from-warning-500 to-warning-600'
           },
           { 
             label: 'High Priority', 
             value: tasks.filter(t => t.priority === 'high').length, 
             icon: FireIcon, 
-            color: 'text-red-600',
-            bg: 'bg-red-50',
-            gradient: 'from-red-500 to-red-600'
+            color: 'text-danger-600',
+            bg: 'bg-danger-50',
+            gradient: 'from-danger-500 to-danger-600'
           }
         ].map((stat, index) => (
           <div key={stat.label} className="card-elegant p-6 group hover-lift animate-slide-in-up" style={{ animationDelay: `${index * 0.1}s` }}>
