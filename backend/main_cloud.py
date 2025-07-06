@@ -48,6 +48,7 @@ async def lifespan(app: FastAPI):
             min_size=1, 
             max_size=10,
             command_timeout=30,
+            statement_cache_size=0,  # Désactive les prepared statements pour Supabase/pgbouncer
             server_settings={
                 'jit': 'off'
             }
@@ -190,6 +191,14 @@ async def health_check():
         "timestamp": datetime.utcnow(),
         "environment": "cloud",
         "service": "platform-api"
+    }
+
+@app.get("/debug/cors")
+async def debug_cors():
+    return {
+        "cors_origins": CORS_ORIGINS,
+        "all_env_vars": dict(os.environ),
+        "debug": "CORS debug endpoint"
     }
 
 # Health check complet avec base de données
