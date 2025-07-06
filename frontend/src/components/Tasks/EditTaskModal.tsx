@@ -24,8 +24,8 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    status: 'TODO',
-    priority: 'MEDIUM',
+    status: 'todo',
+    priority: 'medium',
     project_id: '',
   });
 
@@ -39,7 +39,7 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({
         description: task.description || '',
         status: task.status,
         priority: task.priority,
-        project_id: '', // We don't have project_id in the current Task type
+        project_id: task.project_id ? task.project_id.toString() : '',
       });
     }
   }, [task]);
@@ -173,9 +173,9 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value="TODO">To Do</option>
-                    <option value="IN_PROGRESS">In Progress</option>
-                    <option value="DONE">Done</option>
+                    <option value="todo">To Do</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="done">Done</option>
                   </select>
                 </div>
 
@@ -191,9 +191,9 @@ const EditTaskModal: React.FC<EditTaskModalProps> = ({
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value="LOW">Low</option>
-                    <option value="MEDIUM">Medium</option>
-                    <option value="HIGH">High</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
                   </select>
                 </div>
 

@@ -22,8 +22,8 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    status: 'PLANNING',
-    priority: 'MEDIUM',
+    status: 'planning',
+    priority: 'medium',
     budget: '',
   });
 
@@ -175,11 +175,11 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value="PLANNING">Planning</option>
-                    <option value="ACTIVE">Active</option>
-                    <option value="ON_HOLD">On Hold</option>
-                    <option value="COMPLETED">Completed</option>
-                    <option value="CANCELLED">Cancelled</option>
+                    <option value="planning">Planning</option>
+                    <option value="active">Active</option>
+                    <option value="on_hold">On Hold</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
                   </select>
                 </div>
 
@@ -195,10 +195,10 @@ const EditProjectModal: React.FC<EditProjectModalProps> = ({
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   >
-                    <option value="LOW">Low</option>
-                    <option value="MEDIUM">Medium</option>
-                    <option value="HIGH">High</option>
-                    <option value="CRITICAL">Critical</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="urgent">Urgent</option>
                   </select>
                 </div>
 

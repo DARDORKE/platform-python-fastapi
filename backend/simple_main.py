@@ -79,6 +79,7 @@ class Task(BaseModel):
     status: str
     priority: str
     is_completed: bool = False
+    project_id: Optional[int] = None
     created_at: datetime
 
 class CreateProjectRequest(BaseModel):
@@ -152,6 +153,7 @@ demo_tasks = [
         status="DONE",
         priority="HIGH",
         is_completed=True,
+        project_id=1,
         created_at=datetime.now()
     ),
     Task(
@@ -161,6 +163,7 @@ demo_tasks = [
         status="IN_PROGRESS",
         priority="HIGH",
         is_completed=False,
+        project_id=1,
         created_at=datetime.now()
     )
 ]
@@ -299,7 +302,7 @@ async def delete_project(project_id: int):
 @app.get(f"{API_V1_STR}/tasks", response_model=List[Task])
 async def get_tasks(project_id: Optional[int] = None):
     if project_id:
-        return [t for t in demo_tasks if getattr(t, 'project_id', None) == project_id]
+        return [t for t in demo_tasks if t.project_id == project_id]
     return demo_tasks
 
 @app.get(f"{API_V1_STR}/tasks/{{task_id}}", response_model=Task)
@@ -320,6 +323,7 @@ async def create_task(task_data: CreateTaskRequest):
         status=task_data.status,
         priority=task_data.priority,
         is_completed=task_data.status == "done",
+        project_id=task_data.project_id,
         created_at=datetime.now()
     )
     demo_tasks.append(new_task)
@@ -337,6 +341,7 @@ async def update_task(task_id: int, task_data: CreateTaskRequest):
                 status=task_data.status,
                 priority=task_data.priority,
                 is_completed=task_data.status == "done",
+                project_id=task_data.project_id,
                 created_at=task.created_at  # Keep original creation date
             )
             demo_tasks[i] = updated_task
