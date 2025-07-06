@@ -2,7 +2,7 @@
  * Dashboard store using Zustand
  */
 import { create } from 'zustand';
-import api from '@/lib/api.ts';
+import api from '../lib/api';
 
 interface DashboardStats {
   users_count: number;

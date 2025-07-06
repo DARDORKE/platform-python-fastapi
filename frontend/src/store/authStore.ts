@@ -3,8 +3,8 @@
  */
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { User, LoginCredentials, RegisterData, AuthResponse } from '@/types';
-import api from '@/lib/api.ts';
+import { User, LoginCredentials, RegisterData, AuthResponse } from '../types';
+import api from '../lib/api';
 
 interface AuthState {
   user: User | null;

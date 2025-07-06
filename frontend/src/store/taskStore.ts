@@ -2,8 +2,8 @@
  * Task store using Zustand
  */
 import { create } from 'zustand';
-import { Task, CreateTaskData } from '@/types';
-import api from '@/lib/api.ts';
+import { Task, CreateTaskData } from '../types';
+import api from '../lib/api';
 
 interface TaskState {
   tasks: Task[];
