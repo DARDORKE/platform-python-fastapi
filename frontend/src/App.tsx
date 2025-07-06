@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuthStore } from './store/authStore';
 import Layout from './components/Layout/Layout';
 import LoginForm from './components/Auth/LoginForm';
+import { ToastContainer } from './components/ui/Toast';
+import { ConfirmDialogProvider } from './components/ui/ConfirmDialog';
 
 const App: React.FC = () => {
   const { isAuthenticated, user, fetchUser } = useAuthStore();
@@ -20,26 +22,29 @@ const App: React.FC = () => {
   }, [user, fetchUser]);
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/login"
-          element={
-            isAuthenticated ? <Navigate to="/" replace /> : <LoginForm />
-          }
-        />
-        <Route
-          path="/*"
-          element={
-            isAuthenticated ? (
-              <Layout />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
-      </Routes>
-    </Router>
+    <ConfirmDialogProvider>
+      <Router>
+        <Routes>
+          <Route
+            path="/login"
+            element={
+              isAuthenticated ? <Navigate to="/" replace /> : <LoginForm />
+            }
+          />
+          <Route
+            path="/*"
+            element={
+              isAuthenticated ? (
+                <Layout />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+        </Routes>
+        <ToastContainer />
+      </Router>
+    </ConfirmDialogProvider>
   );
 };
 

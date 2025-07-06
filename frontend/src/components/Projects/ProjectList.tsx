@@ -2,30 +2,34 @@
  * Project list component
  */
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useProjectStore } from '../../store/projectStore';
-import { PlusIcon, FolderIcon } from '@heroicons/react/24/outline';
+import { Project } from '../../types';
+import { PlusIcon, FolderIcon, PencilIcon, TrashIcon, EyeIcon } from '@heroicons/react/24/outline';
 import CreateProjectModal from './CreateProjectModal';
+import EditProjectModal from './EditProjectModal';
+import DeleteProjectModal from './DeleteProjectModal';
 
 const ProjectList: React.FC = () => {
   const { projects, fetchProjects, isLoading } = useProjectStore();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  const [deletingProject, setDeletingProject] = useState<Project | null>(null);
 
   useEffect(() => {
     fetchProjects();
   }, []);
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'active':
+    switch (status.toUpperCase()) {
+      case 'ACTIVE':
         return 'bg-green-100 text-green-800';
-      case 'planning':
+      case 'PLANNING':
         return 'bg-yellow-100 text-yellow-800';
-      case 'completed':
+      case 'COMPLETED':
         return 'bg-blue-100 text-blue-800';
-      case 'on_hold':
+      case 'ON_HOLD':
         return 'bg-orange-100 text-orange-800';
-      case 'cancelled':
+      case 'CANCELLED':
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -33,14 +37,14 @@ const ProjectList: React.FC = () => {
   };
 
   const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'urgent':
+    switch (priority.toUpperCase()) {
+      case 'CRITICAL':
         return 'bg-red-100 text-red-800';
-      case 'high':
+      case 'HIGH':
         return 'bg-orange-100 text-orange-800';
-      case 'medium':
+      case 'MEDIUM':
         return 'bg-yellow-100 text-yellow-800';
-      case 'low':
+      case 'LOW':
         return 'bg-green-100 text-green-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -90,10 +94,9 @@ const ProjectList: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((project) => (
-            <Link
+            <div
               key={project.id}
-              to={`/projects/${project.id}`}
-              className="block bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow"
+              className="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow"
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
@@ -113,7 +116,7 @@ const ProjectList: React.FC = () => {
                   {project.description || 'No description provided'}
                 </p>
                 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mb-4">
                   <span
                     className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getPriorityColor(
                       project.priority
@@ -126,17 +129,77 @@ const ProjectList: React.FC = () => {
                     {new Date(project.created_at).toLocaleDateString()}
                   </span>
                 </div>
+
+                {/* Budget */}
+                {project.budget && (
+                  <div className="mb-4">
+                    <span className="text-sm text-gray-600">
+                      Budget: <span className="font-medium">${project.budget.toLocaleString()}</span>
+                    </span>
+                  </div>
+                )}
+                
+                {/* Actions */}
+                <div className="flex justify-end space-x-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // View project details (placeholder for now)
+                      console.log('View project:', project.id);
+                    }}
+                    className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
+                    title="View project"
+                  >
+                    <EyeIcon className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditingProject(project);
+                    }}
+                    className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
+                    title="Edit project"
+                  >
+                    <PencilIcon className="h-5 w-5" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDeletingProject(project);
+                    }}
+                    className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                    title="Delete project"
+                  >
+                    <TrashIcon className="h-5 w-5" />
+                  </button>
+                </div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}
 
-      {/* Create Project Modal */}
+      {/* Modals */}
       <CreateProjectModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
       />
+      
+      {editingProject && (
+        <EditProjectModal
+          isOpen={!!editingProject}
+          onClose={() => setEditingProject(null)}
+          project={editingProject}
+        />
+      )}
+      
+      {deletingProject && (
+        <DeleteProjectModal
+          isOpen={!!deletingProject}
+          onClose={() => setDeletingProject(null)}
+          project={deletingProject}
+        />
+      )}
     </div>
   );
 };

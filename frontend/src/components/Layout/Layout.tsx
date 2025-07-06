@@ -6,6 +6,7 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import Dashboard from '../Dashboard/Dashboard';
 import ProjectList from '../Projects/ProjectList';
+import TaskList from '../Tasks/TaskList';
 import {
   HomeIcon,
   FolderIcon,
@@ -85,7 +86,7 @@ const Layout: React.FC = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/projects" element={<ProjectList />} />
-            <Route path="/tasks" element={<div>Tasks page coming soon...</div>} />
+            <Route path="/tasks" element={<TaskList />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

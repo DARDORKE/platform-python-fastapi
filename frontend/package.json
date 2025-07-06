@@ -27,7 +27,8 @@
     "zustand": "^4.4.7",
     "axios": "^1.6.2",
     "@headlessui/react": "^1.7.17",
-    "@heroicons/react": "^2.0.18"
+    "@heroicons/react": "^2.0.18",
+    "lucide-react": "^0.292.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
