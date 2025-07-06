@@ -131,8 +131,8 @@ class RegisterRequest(BaseModel):
 class CreateProjectRequest(BaseModel):
     name: str
     description: str
-    status: str = "PLANNING"
-    priority: str = "MEDIUM"
+    status: str = "planning"
+    priority: str = "medium"
     budget: Optional[float] = None
 
 class CreateTaskRequest(BaseModel):
@@ -366,7 +366,7 @@ async def get_task_stats():
         total_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks")
         completed_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks WHERE is_completed = true")
         pending_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks WHERE is_completed = false")
-        high_priority_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks WHERE priority = 'HIGH'")
+        high_priority_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks WHERE priority = 'high'")
         
         return {
             "total_tasks": total_tasks or 0,
@@ -383,7 +383,7 @@ async def get_dashboard_stats():
         projects_count = await conn.fetchval("SELECT COUNT(*) FROM projects")
         tasks_count = await conn.fetchval("SELECT COUNT(*) FROM tasks")
         completed_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks WHERE is_completed = true")
-        active_projects = await conn.fetchval("SELECT COUNT(*) FROM projects WHERE status = 'ACTIVE'")
+        active_projects = await conn.fetchval("SELECT COUNT(*) FROM projects WHERE status = 'active'")
         
         return {
             "users_count": users_count,
