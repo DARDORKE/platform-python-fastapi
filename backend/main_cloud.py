@@ -66,6 +66,7 @@ app = FastAPI(
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
+    redirect_slashes=False,
     lifespan=lifespan
 )
 
@@ -274,6 +275,7 @@ async def get_project(project_id: int):
         return Project(**dict(row))
 
 @app.post(f"{API_V1_STR}/projects", response_model=Project)
+@app.post(f"{API_V1_STR}/projects/", response_model=Project)
 async def create_project(project_data: CreateProjectRequest, current_user: User = Depends(get_current_user)):
     async with db_pool.acquire() as conn:
         row = await conn.fetchrow(
@@ -325,6 +327,7 @@ async def get_task(task_id: int):
         return Task(**dict(row))
 
 @app.post(f"{API_V1_STR}/tasks", response_model=Task)
+@app.post(f"{API_V1_STR}/tasks/", response_model=Task)
 async def create_task(task_data: CreateTaskRequest, current_user: User = Depends(get_current_user)):
     async with db_pool.acquire() as conn:
         row = await conn.fetchrow(
