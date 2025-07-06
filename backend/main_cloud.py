@@ -145,6 +145,7 @@ class Token(BaseModel):
     access_token: str
     token_type: str
     expires_in: int
+    refresh_token: Optional[str] = None
 
 # Helper functions
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -282,10 +283,12 @@ async def _authenticate_user(email: str, password: str) -> Token:
             raise HTTPException(status_code=401, detail="Invalid credentials")
         
         access_token = create_access_token(data={"sub": user_data["id"]})
+        refresh_token = create_access_token(data={"sub": user_data["id"]}, expires_delta=timedelta(days=30))
         return Token(
             access_token=access_token,
             token_type="bearer",
-            expires_in=ACCESS_TOKEN_EXPIRE_MINUTES * 60
+            expires_in=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
+            refresh_token=refresh_token
         )
 
 # User endpoints
