@@ -19,6 +19,9 @@ Ce projet sert de **démonstration technique** pour showcaser les compétences e
 git clone https://github.com/DARDORKE/platform-python-fastapi
 cd platform-python-fastapi
 
+# Rendre les scripts exécutables (si nécessaire)
+chmod +x scripts/*.sh
+
 # Initialisation complète en une commande
 make quick-init
 ```
