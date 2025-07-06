@@ -3,7 +3,7 @@
  */
 import { create } from 'zustand';
 import { Project, ProjectWithStats, CreateProjectData } from '../types';
-import api from '../lib/api.js';
+import api from '../lib/api';
 
 interface ProjectState {
   projects: Project[];
