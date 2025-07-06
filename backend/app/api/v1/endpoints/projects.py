@@ -49,7 +49,7 @@ async def read_project(
     # Get project statistics
     stats = await ProjectService.get_project_stats(db, project_id)
     
-    project_data = ProjectWithStats.from_orm(project)
+    project_data = ProjectWithStats.model_validate(project)
     project_data.total_tasks = stats["total_tasks"]
     project_data.completed_tasks = stats["completed_tasks"]
     project_data.in_progress_tasks = stats["in_progress_tasks"]

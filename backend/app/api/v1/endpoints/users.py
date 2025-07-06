@@ -34,7 +34,7 @@ async def read_user_me(
     """Get current user with statistics."""
     stats = await TaskService.get_user_task_stats(db, current_user.id)
     
-    user_data = UserWithStats.from_orm(current_user)
+    user_data = UserWithStats.model_validate(current_user)
     user_data.total_tasks = stats["total_tasks"]
     user_data.completed_tasks = stats["completed_tasks"]
     

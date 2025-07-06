@@ -69,6 +69,19 @@ def verify_token(token: str) -> Optional[str]:
         )
 
 
+def decode_token(token: str) -> dict:
+    """Decode JWT token and return payload."""
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token invalide",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify password."""
     return pwd_context.verify(plain_password, hashed_password)

@@ -17,11 +17,14 @@ from app.core.config import settings
 from app.core.database import engine
 from app.core.redis import redis_client
 from app.models import Base
+from sqlalchemy import text
 
 # Métriques Prometheus
 REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint', 'status'])
 REQUEST_DURATION = Histogram('http_request_duration_seconds', 'HTTP request duration')
-REQUEST_IN_PROGRESS = Counter('http_requests_in_progress', 'HTTP requests currently in progress')
+
+# Pour les métriques simples sans problème de .dec()
+REQUEST_COUNTER = 0
 
 
 class PrometheusMiddleware(BaseHTTPMiddleware):
@@ -29,7 +32,6 @@ class PrometheusMiddleware(BaseHTTPMiddleware):
     
     async def dispatch(self, request: Request, call_next):
         start_time = time.time()
-        REQUEST_IN_PROGRESS.inc()
         
         try:
             response = await call_next(request)
@@ -51,8 +53,6 @@ class PrometheusMiddleware(BaseHTTPMiddleware):
                 status=500
             ).inc()
             raise
-        finally:
-            REQUEST_IN_PROGRESS.dec()
 
 
 @asynccontextmanager
@@ -115,17 +115,21 @@ def create_application() -> FastAPI:
         lifespan=lifespan,
     )
     
-    # Middlewares
+    # Configuration CORS optimisée pour production
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.BACKEND_CORS_ORIGINS,
+        allow_origins=[
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://localhost:19006"
+        ],
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+        allow_headers=["*"],  # Simplifié pour éviter les rejets
     )
     
+    # Middlewares simples seulement
     app.add_middleware(GZipMiddleware, minimum_size=1000)
-    app.add_middleware(PrometheusMiddleware)
     
     # Routes
     app.include_router(api_router, prefix=settings.API_V1_STR)
@@ -143,7 +147,7 @@ async def health_check():
     try:
         # Vérifier la base de données
         async with engine.begin() as conn:
-            await conn.execute("SELECT 1")
+            await conn.execute(text("SELECT 1"))
         
         # Vérifier Redis
         await redis_client.ping()

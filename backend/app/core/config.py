@@ -38,20 +38,13 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     REFRESH_TOKEN_EXPIRE_DAYS: int = 30
     
-    # CORS
-    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = [
+    # CORS - Simplifié pour compatibilité
+    BACKEND_CORS_ORIGINS: List[str] = [
         "http://localhost:3000",
-        "http://localhost:19006",
+        "http://localhost:19006", 
         "http://127.0.0.1:3000",
+        "*"  # Temporaire pour debug
     ]
-    
-    @validator("BACKEND_CORS_ORIGINS", pre=True)
-    def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
-        if isinstance(v, str) and not v.startswith("["):
-            return [i.strip() for i in v.split(",")]
-        elif isinstance(v, (list, str)):
-            return v
-        raise ValueError(v)
     
     # Pagination
     DEFAULT_PAGE_SIZE: int = 20
