@@ -346,9 +346,9 @@ make quick-init
 ## 📞 Contact
 
 **Kévy DARDOR** - Développeur Full-Stack
-- 💼 **LinkedIn** : [linkedin.com/in/kevy-dardor](https://linkedin.com/in/kevy-dardor)
-- 🐱 **GitHub** : [github.com/kevy-dardor](https://github.com/kevy-dardor)
-- 📧 **Email** : kevy.dardor@example.com
+- 💼 **LinkedIn** : [linkedin.com/in/kevy-dardor](https://www.linkedin.com/in/kevy-dardor/)
+- 🐱 **GitHub** : [github.com/kevy-dardor](https://github.com/DARDORKE/)
+- 📧 **Email** : contact@kevydardor.dev
 
 ---
 
