@@ -166,9 +166,10 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         print(f"🔍 Token received: {token[:20]}...")
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         print(f"🔍 Payload decoded: {payload}")
-        user_id: int = payload.get("sub")
+        user_id = payload.get("sub")
         if user_id is None:
             raise HTTPException(status_code=401, detail="Invalid token - no user ID")
+        user_id = int(user_id)  # Convert string back to int
     except jwt.JWTError as e:
         print(f"❌ JWT Error: {e}")
         raise HTTPException(status_code=401, detail="Invalid token")
@@ -217,7 +218,7 @@ async def refresh_token(refresh_data: dict):
     try:
         # Normalement on devrait décoder le refresh token et vérifier sa validité
         # Pour l'instant on génère juste un nouveau token pour l'utilisateur 1
-        access_token = create_access_token(data={"sub": 1})  # TODO: obtenir le vrai user_id du refresh token
+        access_token = create_access_token(data={"sub": "1"})  # TODO: obtenir le vrai user_id du refresh token
         return Token(
             access_token=access_token,
             token_type="bearer",
@@ -236,7 +237,7 @@ async def authenticate_user(email: str, password: str) -> Token:
         if not user_data or not verify_password(password, user_data["hashed_password"]):
             raise HTTPException(status_code=401, detail="Invalid credentials")
         
-        access_token = create_access_token(data={"sub": user_data["id"]})
+        access_token = create_access_token(data={"sub": str(user_data["id"])})
         print(f"✅ Token created for user {user_data['id']} ({email})")
         print(f"🔑 Token: {access_token[:20]}...")
         return Token(
