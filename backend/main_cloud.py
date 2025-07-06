@@ -27,7 +27,8 @@ if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is required")
 
 # CORS origins - include both local and production URLs
-CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+CORS_ORIGINS = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")]
+print(f"🌐 CORS Origins configured: {CORS_ORIGINS}")
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
