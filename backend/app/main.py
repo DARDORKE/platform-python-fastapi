@@ -16,7 +16,7 @@ from app.api.v1.api import api_router
 from app.core.config import settings
 from app.core.database import engine
 from app.core.redis import redis_client
-from app.models.base import Base
+from app.models import Base
 
 # Métriques Prometheus
 REQUEST_COUNT = Counter('http_requests_total', 'Total HTTP requests', ['method', 'endpoint', 'status'])
