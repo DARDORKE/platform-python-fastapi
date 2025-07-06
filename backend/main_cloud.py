@@ -91,31 +91,26 @@ class User(BaseModel):
 class Project(BaseModel):
     id: int
     name: str
-    description: Optional[str] = None
-    status: str = "PLANNING"
-    priority: Optional[str] = "MEDIUM"
+    description: str
+    status: str
+    priority: str
     budget: Optional[float] = None
-    created_at: Optional[datetime] = None
-    created_by: Optional[int] = None
-    start_date: Optional[datetime] = None
-    end_date: Optional[datetime] = None
+    created_at: datetime
 
 class Task(BaseModel):
     id: int
     title: str
-    description: Optional[str] = None
-    status: str = "TODO"
-    priority: str = "MEDIUM"
-    due_date: Optional[datetime] = None
+    description: str
+    status: str
+    priority: str
+    is_completed: bool = False
     project_id: Optional[int] = None
-    assigned_to: Optional[int] = None
-    created_by: int
     created_at: datetime
 
 class Token(BaseModel):
     access_token: str
     token_type: str
-    refresh_token: Optional[str] = None
+    refresh_token: str
 
 # Request models
 class LoginRequest(BaseModel):
@@ -125,22 +120,21 @@ class LoginRequest(BaseModel):
 class RegisterRequest(BaseModel):
     email: str
     username: str
-    full_name: str
     password: str
+    full_name: str
 
 class CreateProjectRequest(BaseModel):
     name: str
-    description: Optional[str] = None
+    description: str
     status: str = "PLANNING"
     priority: str = "MEDIUM"
     budget: Optional[float] = None
 
 class CreateTaskRequest(BaseModel):
     title: str
-    description: Optional[str] = None
-    status: str = "TODO"
-    priority: str = "MEDIUM"
-    due_date: Optional[datetime] = None
+    description: str
+    status: str = "todo"
+    priority: str = "medium"
     project_id: Optional[int] = None
 
 # Helper functions
@@ -213,7 +207,7 @@ async def refresh_token(refresh_data: dict):
         return Token(
             access_token=access_token,
             token_type="bearer",
-            refresh_token=refresh_data.get("refresh_token", "demo_refresh_token")
+            refresh_token="demo_refresh_token"
         )
     except Exception as e:
         raise HTTPException(status_code=401, detail="Invalid refresh token")
@@ -279,11 +273,11 @@ async def get_project(project_id: int):
 async def create_project(project_data: CreateProjectRequest, current_user: User = Depends(get_current_user)):
     async with db_pool.acquire() as conn:
         row = await conn.fetchrow(
-            """INSERT INTO projects (name, description, status, priority, budget, created_by) 
-               VALUES ($1, $2, $3, $4, $5, $6) 
+            """INSERT INTO projects (name, description, status, priority, budget) 
+               VALUES ($1, $2, $3, $4, $5) 
                RETURNING *""",
             project_data.name, project_data.description, project_data.status,
-            project_data.priority, project_data.budget, current_user.id
+            project_data.priority, project_data.budget
         )
         return Project(**dict(row))
 
@@ -330,11 +324,11 @@ async def get_task(task_id: int):
 async def create_task(task_data: CreateTaskRequest, current_user: User = Depends(get_current_user)):
     async with db_pool.acquire() as conn:
         row = await conn.fetchrow(
-            """INSERT INTO tasks (title, description, status, priority, due_date, project_id, created_by) 
-               VALUES ($1, $2, $3, $4, $5, $6, $7) 
+            """INSERT INTO tasks (title, description, status, priority, is_completed, project_id) 
+               VALUES ($1, $2, $3, $4, $5, $6) 
                RETURNING *""",
             task_data.title, task_data.description, task_data.status,
-            task_data.priority, task_data.due_date, task_data.project_id, current_user.id
+            task_data.priority, task_data.status == "done", task_data.project_id
         )
         return Task(**dict(row))
 
@@ -342,10 +336,10 @@ async def create_task(task_data: CreateTaskRequest, current_user: User = Depends
 async def update_task(task_id: int, task_data: CreateTaskRequest, current_user: User = Depends(get_current_user)):
     async with db_pool.acquire() as conn:
         row = await conn.fetchrow(
-            """UPDATE tasks SET title = $1, description = $2, status = $3, priority = $4, due_date = $5, project_id = $6
+            """UPDATE tasks SET title = $1, description = $2, status = $3, priority = $4, is_completed = $5, project_id = $6
                WHERE id = $7 RETURNING *""",
             task_data.title, task_data.description, task_data.status,
-            task_data.priority, task_data.due_date, task_data.project_id, task_id
+            task_data.priority, task_data.status == "done", task_data.project_id, task_id
         )
         if not row:
             raise HTTPException(status_code=404, detail="Task not found")
@@ -360,18 +354,20 @@ async def delete_task(task_id: int, current_user: User = Depends(get_current_use
         return {"message": "Task deleted successfully"}
 
 @app.get(f"{API_V1_STR}/tasks/stats/me")
-async def get_my_task_stats(current_user: User = Depends(get_current_user)):
+async def get_task_stats():
     async with db_pool.acquire() as conn:
-        stats = await conn.fetchrow(
-            """SELECT 
-                COUNT(*) as total_tasks,
-                COUNT(*) FILTER (WHERE status = 'TODO') as todo_tasks,
-                COUNT(*) FILTER (WHERE status = 'IN_PROGRESS') as in_progress_tasks,
-                COUNT(*) FILTER (WHERE status = 'COMPLETED') as completed_tasks
-               FROM tasks WHERE created_by = $1""",
-            current_user.id
-        )
-        return dict(stats) if stats else {"total_tasks": 0, "todo_tasks": 0, "in_progress_tasks": 0, "completed_tasks": 0}
+        total_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks")
+        completed_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks WHERE is_completed = true")
+        pending_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks WHERE is_completed = false")
+        high_priority_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks WHERE priority = 'HIGH'")
+        
+        return {
+            "total_tasks": total_tasks or 0,
+            "completed_tasks": completed_tasks or 0,
+            "pending_tasks": pending_tasks or 0,
+            "high_priority_tasks": high_priority_tasks or 0,
+            "completion_rate": (completed_tasks / total_tasks * 100) if total_tasks else 0
+        }
 
 @app.get(f"{API_V1_STR}/dashboard/stats")
 async def get_dashboard_stats():
@@ -379,7 +375,7 @@ async def get_dashboard_stats():
         users_count = await conn.fetchval("SELECT COUNT(*) FROM users")
         projects_count = await conn.fetchval("SELECT COUNT(*) FROM projects")
         tasks_count = await conn.fetchval("SELECT COUNT(*) FROM tasks")
-        completed_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks WHERE status = 'COMPLETED'")
+        completed_tasks = await conn.fetchval("SELECT COUNT(*) FROM tasks WHERE is_completed = true")
         active_projects = await conn.fetchval("SELECT COUNT(*) FROM projects WHERE status = 'ACTIVE'")
         
         return {
