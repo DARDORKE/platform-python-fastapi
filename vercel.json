@@ -1,6 +1,5 @@
 {
   "installCommand": "npm install --production=false",
-  "buildCommand": "ls -la src/lib/ && npm run build",
   "framework": null,
   "rewrites": [
     {
