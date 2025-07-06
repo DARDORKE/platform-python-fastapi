@@ -22,6 +22,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30")
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 if not DATABASE_URL:
+    print("❌ ERROR: DATABASE_URL environment variable is required")
+    print("Available env vars:", list(os.environ.keys()))
     raise ValueError("DATABASE_URL environment variable is required")
 
 # CORS origins - include both local and production URLs
@@ -38,9 +40,26 @@ db_pool = None
 async def lifespan(app: FastAPI):
     """Manage database connection pool lifecycle"""
     global db_pool
-    db_pool = await asyncpg.create_pool(DATABASE_URL, min_size=1, max_size=10)
-    yield
-    await db_pool.close()
+    try:
+        print(f"🔗 Connecting to database...")
+        db_pool = await asyncpg.create_pool(
+            DATABASE_URL, 
+            min_size=1, 
+            max_size=10,
+            command_timeout=30,
+            server_settings={
+                'jit': 'off'
+            }
+        )
+        print("✅ Database connection pool created")
+        yield
+    except Exception as e:
+        print(f"❌ Database connection failed: {e}")
+        raise
+    finally:
+        if db_pool:
+            print("🔄 Closing database connection pool")
+            await db_pool.close()
 
 app = FastAPI(
     title="Platform Python FastAPI",
@@ -164,7 +183,34 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
 # Health check
 @app.get("/health")
 async def health_check():
-    return {"status": "healthy", "timestamp": datetime.utcnow()}
+    try:
+        # Test database connection
+        async with db_pool.acquire() as conn:
+            await conn.fetchval("SELECT 1")
+        
+        return {
+            "status": "healthy", 
+            "timestamp": datetime.utcnow(),
+            "database": "connected",
+            "environment": "cloud"
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy", 
+            "timestamp": datetime.utcnow(),
+            "database": "disconnected",
+            "error": str(e),
+            "environment": "cloud"
+        }
+
+# Simple health check sans DB (pour Railway)
+@app.get("/")
+async def root():
+    return {
+        "message": "Platform Portfolio API", 
+        "status": "running",
+        "docs": "/docs"
+    }
 
 # Authentication endpoints
 @app.post("/api/v1/auth/register", response_model=User)
@@ -379,4 +425,5 @@ async def get_my_task_stats(current_user: User = Depends(get_current_user)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)

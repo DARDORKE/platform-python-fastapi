@@ -1,1 +1,1 @@
-web: uvicorn backend.main_cloud:app --host 0.0.0.0 --port $PORT
+web: cd backend && uvicorn main_cloud:app --host 0.0.0.0 --port $PORT
