@@ -91,20 +91,23 @@ db-seed: ## Charge les données de test
 
 fixtures: ## Déploie les fixtures (données de démonstration)
 	@echo "$(GREEN)🚀 Déploiement des fixtures...$(NC)"
-	@chmod +x scripts/deploy_fixtures.sh
-	@./scripts/deploy_fixtures.sh
+	@$(DOCKER_COMPOSE) exec -T $(BACKEND_CONTAINER) python /app/scripts/deploy_fixtures.py
 	@echo "$(GREEN)✅ Fixtures déployées!$(NC)"
 
 init: ## Initialise complètement le projet (BDD + fixtures)
 	@echo "$(GREEN)🚀 Initialisation complète du projet...$(NC)"
-	@chmod +x scripts/init_project.sh
-	@./scripts/init_project.sh
+	@$(DOCKER_COMPOSE) up -d
+	@echo "$(YELLOW)⏳ Attente du démarrage des services...$(NC)"
+	@sleep 10
+	@$(DOCKER_COMPOSE) exec -T $(BACKEND_CONTAINER) python /app/scripts/init_project_simple.py
 	@echo "$(GREEN)✅ Projet initialisé!$(NC)"
 
 quick-init: ## Initialise le projet sans confirmation
 	@echo "$(GREEN)🚀 Initialisation rapide du projet...$(NC)"
-	@chmod +x scripts/init_project.sh
-	@./scripts/init_project.sh --yes
+	@$(DOCKER_COMPOSE) up -d
+	@echo "$(YELLOW)⏳ Attente du démarrage des services...$(NC)"
+	@sleep 10
+	@$(DOCKER_COMPOSE) exec -T $(BACKEND_CONTAINER) python /app/scripts/init_project_simple.py
 	@echo "$(GREEN)✅ Projet initialisé!$(NC)"
 
 init-simple: ## Initialise le projet sans Alembic (création directe)
