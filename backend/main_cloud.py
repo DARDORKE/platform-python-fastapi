@@ -12,7 +12,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from passlib.context import CryptContext
 from pydantic import BaseModel
-import jwt
+from jose import jwt
 from contextlib import asynccontextmanager
 
 # Configuration
@@ -167,7 +167,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         user_id: int = payload.get("sub")
         if user_id is None:
             raise HTTPException(status_code=401, detail="Invalid token")
-    except jwt.PyJWTError:
+    except jwt.JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
     
     async with db_pool.acquire() as conn:

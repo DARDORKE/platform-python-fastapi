@@ -15,10 +15,10 @@ def main():
     # Ajouter au Python path
     sys.path.insert(0, backend_dir)
     
-    # Démarrer uvicorn
+    # Démarrer uvicorn via python -m
     port = os.getenv("PORT", "8080")
     cmd = [
-        "uvicorn", 
+        "python", "-m", "uvicorn", 
         "main_cloud:app", 
         "--host", "0.0.0.0", 
         "--port", port

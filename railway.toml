@@ -12,4 +12,4 @@ variables = { }
 buildCommand = "pip install -r requirements.txt"
 
 [environments.production.deploy]
-startCommand = "python start.py"
+startCommand = "python start_direct.py"
