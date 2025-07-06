@@ -16,7 +16,7 @@ Ce projet sert de **démonstration technique** pour showcaser les compétences e
 
 ```bash
 # Cloner le repository
-git clone <repository-url>
+git clone https://github.com/DARDORKE/platform-python-fastapi
 cd platform-python-fastapi
 
 # Initialisation complète en une commande
