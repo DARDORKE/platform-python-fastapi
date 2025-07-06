@@ -16,11 +16,14 @@ from jose import jwt
 from contextlib import asynccontextmanager
 
 # Configuration
-SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
+SECRET_KEY = os.getenv("SECRET_KEY", "80f42ad38ba618fc60dfa0d283f87e8a")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
 DATABASE_URL = os.getenv("DATABASE_URL")
 API_V1_STR = "/api/v1"
+
+print(f"🔐 SECRET_KEY configured: {'✅ Custom' if os.getenv('SECRET_KEY') else '⚠️  Using default'}")
+print(f"⏱️  Token expire minutes: {ACCESS_TOKEN_EXPIRE_MINUTES}")
 
 if not DATABASE_URL:
     print("❌ ERROR: DATABASE_URL environment variable is required")
@@ -160,11 +163,14 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     """Get current user from JWT token"""
     try:
         token = credentials.credentials
+        print(f"🔍 Token received: {token[:20]}...")
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        print(f"🔍 Payload decoded: {payload}")
         user_id: int = payload.get("sub")
         if user_id is None:
-            raise HTTPException(status_code=401, detail="Invalid token")
-    except jwt.JWTError:
+            raise HTTPException(status_code=401, detail="Invalid token - no user ID")
+    except jwt.JWTError as e:
+        print(f"❌ JWT Error: {e}")
         raise HTTPException(status_code=401, detail="Invalid token")
     
     async with db_pool.acquire() as conn:
@@ -224,6 +230,8 @@ async def authenticate_user(email: str, password: str) -> Token:
             raise HTTPException(status_code=401, detail="Invalid credentials")
         
         access_token = create_access_token(data={"sub": user_data["id"]})
+        print(f"✅ Token created for user {user_data['id']} ({email})")
+        print(f"🔑 Token: {access_token[:20]}...")
         return Token(
             access_token=access_token,
             token_type="bearer",
@@ -239,7 +247,18 @@ async def get_users():
 
 @app.get(f"{API_V1_STR}/users/me", response_model=User)
 async def get_current_user_info(current_user: User = Depends(get_current_user)):
+    print(f"📱 /users/me called - User: {current_user.email}")
     return current_user
+
+# Debug endpoint to test token validation
+@app.get(f"{API_V1_STR}/debug/validate-token")
+async def debug_validate_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    try:
+        token = credentials.credentials
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return {"valid": True, "payload": payload, "token_preview": token[:20] + "..."}
+    except Exception as e:
+        return {"valid": False, "error": str(e), "token_preview": token[:20] + "..."}
 
 # Project endpoints
 @app.get(f"{API_V1_STR}/projects", response_model=List[Project])

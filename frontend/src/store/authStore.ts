@@ -30,8 +30,10 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true, error: null });
         try {
           const response = await api.post<AuthResponse>('/auth/login/json', credentials);
+          console.log('Login response:', response.data);
           const { access_token, refresh_token } = response.data;
           
+          console.log('Storing token:', access_token);
           localStorage.setItem('access_token', access_token);
           localStorage.setItem('refresh_token', refresh_token);
           
