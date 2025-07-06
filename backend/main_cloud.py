@@ -22,8 +22,6 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30")
 DATABASE_URL = os.getenv("DATABASE_URL")
 API_V1_STR = "/api/v1"
 
-print(f"🔐 SECRET_KEY configured: {'✅ Custom' if os.getenv('SECRET_KEY') else '⚠️  Using default'}")
-print(f"⏱️  Token expire minutes: {ACCESS_TOKEN_EXPIRE_MINUTES}")
 
 if not DATABASE_URL:
     print("❌ ERROR: DATABASE_URL environment variable is required")
@@ -31,7 +29,6 @@ if not DATABASE_URL:
 
 # CORS origins - include both local and production URLs
 CORS_ORIGINS = [origin.strip() for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")]
-print(f"🌐 CORS Origins configured: {CORS_ORIGINS}")
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -45,7 +42,6 @@ async def lifespan(app: FastAPI):
     """Manage database connection pool lifecycle"""
     global db_pool
     try:
-        print(f"🔗 Connecting to database...")
         db_pool = await asyncpg.create_pool(
             DATABASE_URL, 
             min_size=1, 
@@ -56,7 +52,6 @@ async def lifespan(app: FastAPI):
                 'jit': 'off'
             }
         )
-        print("✅ Database connection pool created")
         yield
     except Exception as e:
         print(f"❌ Database connection failed: {e}")
@@ -64,7 +59,6 @@ async def lifespan(app: FastAPI):
     finally:
         if db_pool:
             await db_pool.close()
-            print("🔗 Database connection pool closed")
 
 app = FastAPI(
     title="Platform API - Cloud",
@@ -99,9 +93,9 @@ class Project(BaseModel):
     name: str
     description: Optional[str] = None
     status: str = "PLANNING"
-    priority: str = "MEDIUM"
+    priority: Optional[str] = "MEDIUM"
     budget: Optional[float] = None
-    created_at: datetime
+    created_at: Optional[datetime] = None
     created_by: Optional[int] = None
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
@@ -163,15 +157,12 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
     """Get current user from JWT token"""
     try:
         token = credentials.credentials
-        print(f"🔍 Token received: {token[:20]}...")
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        print(f"🔍 Payload decoded: {payload}")
         user_id = payload.get("sub")
         if user_id is None:
             raise HTTPException(status_code=401, detail="Invalid token - no user ID")
         user_id = int(user_id)  # Convert string back to int
-    except jwt.JWTError as e:
-        print(f"❌ JWT Error: {e}")
+    except jwt.JWTError:
         raise HTTPException(status_code=401, detail="Invalid token")
     
     async with db_pool.acquire() as conn:
@@ -238,8 +229,6 @@ async def authenticate_user(email: str, password: str) -> Token:
             raise HTTPException(status_code=401, detail="Invalid credentials")
         
         access_token = create_access_token(data={"sub": str(user_data["id"])})
-        print(f"✅ Token created for user {user_data['id']} ({email})")
-        print(f"🔑 Token: {access_token[:20]}...")
         return Token(
             access_token=access_token,
             token_type="bearer",
@@ -255,7 +244,6 @@ async def get_users():
 
 @app.get(f"{API_V1_STR}/users/me", response_model=User)
 async def get_current_user_info(current_user: User = Depends(get_current_user)):
-    print(f"📱 /users/me called - User: {current_user.email}")
     return current_user
 
 # Debug endpoint to test token validation
@@ -271,9 +259,13 @@ async def debug_validate_token(credentials: HTTPAuthorizationCredentials = Depen
 # Project endpoints
 @app.get(f"{API_V1_STR}/projects", response_model=List[Project])
 async def get_projects():
-    async with db_pool.acquire() as conn:
-        rows = await conn.fetch("SELECT * FROM projects ORDER BY id")
-        return [Project(**dict(row)) for row in rows]
+    try:
+        async with db_pool.acquire() as conn:
+            rows = await conn.fetch("SELECT * FROM projects ORDER BY id")
+            return [Project(**dict(row)) for row in rows]
+    except Exception as e:
+        print(f"❌ Error getting projects: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get(f"{API_V1_STR}/projects/{{project_id}}", response_model=Project)
 async def get_project(project_id: int):
