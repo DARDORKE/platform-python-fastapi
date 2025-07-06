@@ -248,7 +248,7 @@ async def get_projects():
         rows = await conn.fetch("SELECT * FROM projects ORDER BY id")
         return [Project(**dict(row)) for row in rows]
 
-@app.get(f"{API_V1_STR}/projects/{project_id}", response_model=Project)
+@app.get(f"{API_V1_STR}/projects/{{project_id}}", response_model=Project)
 async def get_project(project_id: int):
     async with db_pool.acquire() as conn:
         row = await conn.fetchrow("SELECT * FROM projects WHERE id = $1", project_id)
@@ -268,7 +268,7 @@ async def create_project(project_data: CreateProjectRequest, current_user: User 
         )
         return Project(**dict(row))
 
-@app.put(f"{API_V1_STR}/projects/{project_id}", response_model=Project)
+@app.put(f"{API_V1_STR}/projects/{{project_id}}", response_model=Project)
 async def update_project(project_id: int, project_data: CreateProjectRequest, current_user: User = Depends(get_current_user)):
     async with db_pool.acquire() as conn:
         row = await conn.fetchrow(
@@ -281,7 +281,7 @@ async def update_project(project_id: int, project_data: CreateProjectRequest, cu
             raise HTTPException(status_code=404, detail="Project not found")
         return Project(**dict(row))
 
-@app.delete(f"{API_V1_STR}/projects/{project_id}")
+@app.delete(f"{API_V1_STR}/projects/{{project_id}}")
 async def delete_project(project_id: int, current_user: User = Depends(get_current_user)):
     async with db_pool.acquire() as conn:
         result = await conn.execute("DELETE FROM projects WHERE id = $1", project_id)
@@ -299,7 +299,7 @@ async def get_tasks(project_id: Optional[int] = None):
             rows = await conn.fetch("SELECT * FROM tasks ORDER BY id")
         return [Task(**dict(row)) for row in rows]
 
-@app.get(f"{API_V1_STR}/tasks/{task_id}", response_model=Task)
+@app.get(f"{API_V1_STR}/tasks/{{task_id}}", response_model=Task)
 async def get_task(task_id: int):
     async with db_pool.acquire() as conn:
         row = await conn.fetchrow("SELECT * FROM tasks WHERE id = $1", task_id)
@@ -319,7 +319,7 @@ async def create_task(task_data: CreateTaskRequest, current_user: User = Depends
         )
         return Task(**dict(row))
 
-@app.put(f"{API_V1_STR}/tasks/{task_id}", response_model=Task)
+@app.put(f"{API_V1_STR}/tasks/{{task_id}}", response_model=Task)
 async def update_task(task_id: int, task_data: CreateTaskRequest, current_user: User = Depends(get_current_user)):
     async with db_pool.acquire() as conn:
         row = await conn.fetchrow(
@@ -332,7 +332,7 @@ async def update_task(task_id: int, task_data: CreateTaskRequest, current_user: 
             raise HTTPException(status_code=404, detail="Task not found")
         return Task(**dict(row))
 
-@app.delete(f"{API_V1_STR}/tasks/{task_id}")
+@app.delete(f"{API_V1_STR}/tasks/{{task_id}}")
 async def delete_task(task_id: int, current_user: User = Depends(get_current_user)):
     async with db_pool.acquire() as conn:
         result = await conn.execute("DELETE FROM tasks WHERE id = $1", task_id)
