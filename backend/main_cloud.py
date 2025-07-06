@@ -425,5 +425,7 @@ async def get_my_task_stats(current_user: User = Depends(get_current_user)):
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.getenv("PORT", 8000))
+    # Railway utilise le port 8080 par défaut, ou $PORT si défini
+    port = int(os.getenv("PORT", 8080))
+    print(f"🚀 Starting server on port {port}")
     uvicorn.run(app, host="0.0.0.0", port=port)
