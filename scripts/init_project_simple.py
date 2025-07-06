@@ -927,7 +927,7 @@ def print_summary(users, projects, tasks):
     in_progress_tasks = sum(1 for t in tasks if t.status.value == 'IN_PROGRESS')
     
     print(f"\n💰 BUSINESS STATISTICS:")
-    print(f"├── Total budget: €{budget_total:,}")
+    print(f"├── Total budget: ${budget_total:,}")
     print(f"├── Completed tasks: {completed_tasks}")
     print(f"├── In progress tasks: {in_progress_tasks}")
     print(f"└── Completion rate: {(completed_tasks/len(tasks)*100):.1f}%")

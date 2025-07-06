@@ -137,7 +137,7 @@ const ViewProjectModal: React.FC<ViewProjectModalProps> = ({
                       {project.budget && (
                         <div className="flex items-center">
                           <CurrencyEuroIcon className="h-5 w-5 text-gray-400 mr-2" />
-                          <span className="text-sm text-gray-600">Budget: €{project.budget.toLocaleString()}</span>
+                          <span className="text-sm text-gray-600">Budget: ${project.budget.toLocaleString()}</span>
                         </div>
                       )}
 

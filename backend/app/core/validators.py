@@ -109,8 +109,8 @@ class BudgetValidator:
         if budget < 0:
             raise ValueError("Le budget ne peut pas être négatif")
         
-        if budget > 1000000:  # 1M€
-            raise ValueError("Le budget ne peut pas dépasser 1 000 000€")
+        if budget > 1000000:  # 1M$
+            raise ValueError("Le budget ne peut pas dépasser 1 000 000$")
         
         return budget
 

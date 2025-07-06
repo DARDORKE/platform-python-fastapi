@@ -228,12 +228,12 @@ make quick-init
 - **🧪 Testeur QA** : tester@example.com / test123
 
 ### 📁 Projets (6)
-1. **E-commerce Platform** - Plateforme e-commerce moderne (€85,000)
-2. **Mobile App Development** - Application React Native (€65,000)
-3. **API Documentation Portal** - Portail de documentation (€25,000)
-4. **DevOps Pipeline** - Pipeline CI/CD complet (€45,000) ✅ Terminé
-5. **Analytics Dashboard** - Tableau de bord analytics (€40,000)
-6. **Security Audit** - Audit de sécurité complet (€30,000)
+1. **E-commerce Platform** - Plateforme e-commerce moderne ($85,000)
+2. **Mobile App Development** - Application React Native ($65,000)
+3. **API Documentation Portal** - Portail de documentation ($25,000)
+4. **DevOps Pipeline** - Pipeline CI/CD complet ($45,000) ✅ Terminé
+5. **Analytics Dashboard** - Tableau de bord analytics ($40,000)
+6. **Security Audit** - Audit de sécurité complet ($30,000)
 
 ### 📝 Tâches (19)
 Réparties entre les projets avec différents statuts :

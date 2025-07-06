@@ -136,7 +136,7 @@ const ProjectList: React.FC = () => {
                 {project.budget && (
                   <div className="mb-4">
                     <span className="text-sm text-gray-600">
-                      Budget: <span className="font-medium">€{project.budget.toLocaleString()}</span>
+                      Budget: <span className="font-medium">${project.budget.toLocaleString()}</span>
                     </span>
                   </div>
                 )}

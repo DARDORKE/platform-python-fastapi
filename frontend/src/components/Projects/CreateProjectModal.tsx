@@ -2,8 +2,8 @@
  * Create project modal component
  */
 import React, { useState } from 'react';
-import { Dialog } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Dialog, Transition } from '@headlessui/react';
+import { XMarkIcon, RocketLaunchIcon, CalendarIcon, CurrencyEuroIcon, FlagIcon } from '@heroicons/react/24/outline';
 import { useProjectStore } from '../../store/projectStore';
 import { CreateProjectData } from '../../types';
 
@@ -62,161 +62,216 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose} className="relative z-50">
-      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-      
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto max-w-md w-full bg-white rounded-lg shadow-xl">
-          <div className="flex items-center justify-between p-6 border-b">
-            <Dialog.Title className="text-lg font-medium text-gray-900">
-              Create New Project
-            </Dialog.Title>
-            <button
-              onClick={handleClose}
-              className="text-gray-400 hover:text-gray-500"
-            >
-              <XMarkIcon className="h-6 w-6" />
-            </button>
-          </div>
-
-          <form onSubmit={handleSubmit} className="p-6 space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Project Name *
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                value={formData.name}
-                onChange={handleChange}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                placeholder="Enter project name"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                Description
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                rows={3}
-                value={formData.description}
-                onChange={handleChange}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                placeholder="Enter project description"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="status" className="block text-sm font-medium text-gray-700">
-                  Status
-                </label>
-                <select
-                  id="status"
-                  name="status"
-                  value={formData.status}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option value="planning">Planning</option>
-                  <option value="active">Active</option>
-                  <option value="on_hold">On Hold</option>
-                  <option value="completed">Completed</option>
-                  <option value="cancelled">Cancelled</option>
-                </select>
+    <Transition show={isOpen} as={React.Fragment}>
+      <Dialog onClose={handleClose} className="relative z-50">
+        <Transition.Child
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="modal-backdrop fixed inset-0" aria-hidden="true" />
+        </Transition.Child>
+        
+        <div className="fixed inset-0 flex items-center justify-center p-4 sm:p-6">
+          <Transition.Child
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+          >
+            <Dialog.Panel className="mx-auto max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-elegant-lg">
+              {/* Header */}
+              <div className="bg-gradient-to-r from-primary-50 to-accent-purple/10 px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    <div className="p-1.5 sm:p-2 bg-gradient-to-br from-primary-500 to-accent-purple rounded-xl shadow-lg">
+                      <RocketLaunchIcon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                    </div>
+                    <Dialog.Title className="text-lg sm:text-2xl font-bold text-gray-900">
+                      Create New Project
+                    </Dialog.Title>
+                  </div>
+                  <button
+                    onClick={handleClose}
+                    className="p-1.5 sm:p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-300"
+                  >
+                    <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+                  </button>
+                </div>
+                <p className="text-gray-600 mt-2 text-sm sm:text-base">Fill in the details to create your new project</p>
               </div>
 
-              <div>
-                <label htmlFor="priority" className="block text-sm font-medium text-gray-700">
-                  Priority
-                </label>
-                <select
-                  id="priority"
-                  name="priority"
-                  value={formData.priority}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                >
-                  <option value="low">Low</option>
-                  <option value="medium">Medium</option>
-                  <option value="high">High</option>
-                  <option value="urgent">Urgent</option>
-                </select>
-              </div>
-            </div>
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+                {/* Project Name */}
+                <div className="space-y-2">
+                  <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
+                    Project Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="input-elegant"
+                    placeholder="Enter a descriptive project name..."
+                  />
+                </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="start_date" className="block text-sm font-medium text-gray-700">
-                  Start Date
-                </label>
-                <input
-                  type="date"
-                  id="start_date"
-                  name="start_date"
-                  value={formData.start_date}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
+                {/* Description */}
+                <div className="space-y-2">
+                  <label htmlFor="description" className="block text-sm font-semibold text-gray-700">
+                    Description
+                  </label>
+                  <textarea
+                    id="description"
+                    name="description"
+                    rows={4}
+                    value={formData.description}
+                    onChange={handleChange}
+                    className="input-elegant resize-none"
+                    placeholder="Describe your project goals and objectives..."
+                  />
+                </div>
 
-              <div>
-                <label htmlFor="end_date" className="block text-sm font-medium text-gray-700">
-                  End Date
-                </label>
-                <input
-                  type="date"
-                  id="end_date"
-                  name="end_date"
-                  value={formData.end_date}
-                  onChange={handleChange}
-                  className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-            </div>
+                {/* Status and Priority */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                  <div className="space-y-2">
+                    <label htmlFor="status" className="block text-sm font-semibold text-gray-700 flex items-center">
+                      <FlagIcon className="h-4 w-4 mr-2 text-primary-500" />
+                      Status
+                    </label>
+                    <select
+                      id="status"
+                      name="status"
+                      value={formData.status}
+                      onChange={handleChange}
+                      className="input-elegant appearance-none cursor-pointer"
+                    >
+                      <option value="planning">📋 Planning</option>
+                      <option value="active">🚀 Active</option>
+                      <option value="on_hold">⏸️ On Hold</option>
+                      <option value="completed">✅ Completed</option>
+                      <option value="cancelled">❌ Cancelled</option>
+                    </select>
+                  </div>
 
-            <div>
-              <label htmlFor="budget" className="block text-sm font-medium text-gray-700">
-                Budget (€)
-              </label>
-              <input
-                type="number"
-                id="budget"
-                name="budget"
-                min="0"
-                step="1"
-                value={formData.budget || ''}
-                onChange={handleChange}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                placeholder="Enter budget amount"
-              />
-            </div>
+                  <div className="space-y-2">
+                    <label htmlFor="priority" className="block text-sm font-semibold text-gray-700">
+                      Priority
+                    </label>
+                    <select
+                      id="priority"
+                      name="priority"
+                      value={formData.priority}
+                      onChange={handleChange}
+                      className="input-elegant appearance-none cursor-pointer"
+                    >
+                      <option value="low">🌱 Low</option>
+                      <option value="medium">⚡ Medium</option>
+                      <option value="high">🔥 High</option>
+                      <option value="urgent">🚨 Urgent</option>
+                    </select>
+                  </div>
+                </div>
 
-            <div className="flex justify-end space-x-3 pt-4">
-              <button
-                type="button"
-                onClick={handleClose}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                {isLoading ? 'Creating...' : 'Create Project'}
-              </button>
-            </div>
-          </form>
-        </Dialog.Panel>
-      </div>
-    </Dialog>
+                {/* Dates */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                  <div className="space-y-2">
+                    <label htmlFor="start_date" className="block text-sm font-semibold text-gray-700 flex items-center">
+                      <CalendarIcon className="h-4 w-4 mr-2 text-primary-500" />
+                      Start Date
+                    </label>
+                    <input
+                      type="date"
+                      id="start_date"
+                      name="start_date"
+                      value={formData.start_date}
+                      onChange={handleChange}
+                      className="input-elegant"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="end_date" className="block text-sm font-semibold text-gray-700 flex items-center">
+                      <CalendarIcon className="h-4 w-4 mr-2 text-red-500" />
+                      End Date
+                    </label>
+                    <input
+                      type="date"
+                      id="end_date"
+                      name="end_date"
+                      value={formData.end_date}
+                      onChange={handleChange}
+                      className="input-elegant"
+                    />
+                  </div>
+                </div>
+
+                {/* Budget */}
+                <div className="space-y-2">
+                  <label htmlFor="budget" className="block text-sm font-semibold text-gray-700 flex items-center">
+                    <CurrencyEuroIcon className="h-4 w-4 mr-2 text-emerald-500" />
+                    Budget ($)
+                  </label>
+                  <div className="relative">
+                    <CurrencyEuroIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <input
+                      type="number"
+                      id="budget"
+                      name="budget"
+                      min="0"
+                      step="100"
+                      value={formData.budget || ''}
+                      onChange={handleChange}
+                      className="input-elegant pl-11"
+                      placeholder="10,000"
+                    />
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4 sm:pt-6 border-t border-gray-100">
+                  <button
+                    type="button"
+                    onClick={handleClose}
+                    className="btn-secondary w-full sm:w-auto order-2 sm:order-1"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading || !formData.name.trim()}
+                    className="btn-primary relative overflow-hidden w-full sm:w-auto order-1 sm:order-2"
+                  >
+                    <span className="flex items-center">
+                      {isLoading ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
+                          Creating...
+                        </>
+                      ) : (
+                        <>
+                          <RocketLaunchIcon className="h-4 w-4 mr-2" />
+                          Create Project
+                        </>
+                      )}
+                    </span>
+                  </button>
+                </div>
+              </form>
+            </Dialog.Panel>
+          </Transition.Child>
+        </div>
+      </Dialog>
+    </Transition>
   );
 };
 

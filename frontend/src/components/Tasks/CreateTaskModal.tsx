@@ -2,9 +2,17 @@
  * CreateTaskModal component
  */
 import React, { useState } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
 import { useTaskStore } from '../../store/taskStore';
 import { Project } from '../../types';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { 
+  XMarkIcon, 
+  PlusIcon, 
+  FlagIcon,
+  FolderIcon,
+  ExclamationCircleIcon
+} from '@heroicons/react/24/outline';
+import { QueueListIcon as QueueListIconSolid } from '@heroicons/react/24/solid';
 
 interface CreateTaskModalProps {
   isOpen: boolean;
@@ -85,37 +93,59 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
     }
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={onClose}></div>
+    <Transition show={isOpen} as={React.Fragment}>
+      <Dialog onClose={onClose} className="relative z-50">
+        <Transition.Child
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="modal-backdrop fixed inset-0" aria-hidden="true" />
+        </Transition.Child>
+        
+        <div className="fixed inset-0 flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <Transition.Child
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95 translate-y-full sm:translate-y-0"
+            enterTo="opacity-100 scale-100 translate-y-0"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100 translate-y-0"
+            leaveTo="opacity-0 scale-95 translate-y-full sm:translate-y-0"
+          >
+            <Dialog.Panel className="mx-auto max-w-2xl w-full max-h-screen sm:max-h-[90vh] overflow-y-auto bg-white rounded-t-2xl sm:rounded-2xl shadow-elegant-lg">
+              {/* Header */}
+              <div className="bg-gradient-to-r from-emerald-50 to-emerald-100/50 px-4 sm:px-6 py-4 sm:py-5 border-b border-emerald-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    <div className="p-1.5 sm:p-2 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl shadow-lg">
+                      <QueueListIconSolid className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+                    </div>
+                    <div>
+                      <Dialog.Title className="text-lg sm:text-2xl font-bold text-gray-900">
+                        Create New Task
+                      </Dialog.Title>
+                      <p className="text-gray-600 text-xs sm:text-sm">Add a new task to organize your work</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={onClose}
+                    className="p-1.5 sm:p-2 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-all duration-300"
+                  >
+                    <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+                  </button>
+                </div>
+              </div>
 
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-
-        <div className="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-          <div className="absolute top-0 right-0 pt-4 pr-4">
-            <button
-              type="button"
-              className="bg-white rounded-md text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-              onClick={onClose}
-            >
-              <XMarkIcon className="h-6 w-6" />
-            </button>
-          </div>
-
-          <div className="sm:flex sm:items-start">
-            <div className="mt-3 text-center sm:mt-0 sm:text-left w-full">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                Create New Task
-              </h3>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Title */}
-                <div>
-                  <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                    Title *
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+                {/* Task Title */}
+                <div className="space-y-2">
+                  <label htmlFor="title" className="block text-sm font-semibold text-gray-700">
+                    Task Title *
                   </label>
                   <input
                     type="text"
@@ -123,117 +153,141 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
-                    className={`mt-1 block w-full px-3 py-2 border ${
-                      errors.title ? 'border-red-300' : 'border-gray-300'
-                    } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                    placeholder="Enter task title"
+                    className={`input-elegant ${
+                      errors.title ? 'border-red-300 bg-red-50/50' : ''
+                    }`}
+                    placeholder="Enter a clear, descriptive task title..."
                   />
                   {errors.title && (
-                    <p className="mt-1 text-sm text-red-600">{errors.title}</p>
+                    <div className="flex items-center space-x-2 text-red-600">
+                      <ExclamationCircleIcon className="h-4 w-4" />
+                      <p className="text-sm">{errors.title}</p>
+                    </div>
                   )}
                 </div>
 
                 {/* Description */}
-                <div>
-                  <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                <div className="space-y-2">
+                  <label htmlFor="description" className="block text-sm font-semibold text-gray-700">
                     Description *
                   </label>
                   <textarea
                     id="description"
                     name="description"
-                    rows={3}
+                    rows={4}
                     value={formData.description}
                     onChange={handleChange}
-                    className={`mt-1 block w-full px-3 py-2 border ${
-                      errors.description ? 'border-red-300' : 'border-gray-300'
-                    } rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500`}
-                    placeholder="Enter task description"
+                    className={`input-elegant resize-none ${
+                      errors.description ? 'border-red-300 bg-red-50/50' : ''
+                    }`}
+                    placeholder="Describe what needs to be done, include any important details..."
                   />
                   {errors.description && (
-                    <p className="mt-1 text-sm text-red-600">{errors.description}</p>
+                    <div className="flex items-center space-x-2 text-red-600">
+                      <ExclamationCircleIcon className="h-4 w-4" />
+                      <p className="text-sm">{errors.description}</p>
+                    </div>
                   )}
                 </div>
 
-                {/* Status */}
-                <div>
-                  <label htmlFor="status" className="block text-sm font-medium text-gray-700">
-                    Status
-                  </label>
-                  <select
-                    id="status"
-                    name="status"
-                    value={formData.status}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="todo">To Do</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="done">Done</option>
-                  </select>
+                {/* Status and Priority */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                  <div className="space-y-2">
+                    <label htmlFor="status" className="block text-sm font-semibold text-gray-700 flex items-center">
+                      <FlagIcon className="h-4 w-4 mr-2 text-emerald-500" />
+                      Status
+                    </label>
+                    <select
+                      id="status"
+                      name="status"
+                      value={formData.status}
+                      onChange={handleChange}
+                      className="input-elegant appearance-none cursor-pointer"
+                    >
+                      <option value="todo">📋 To Do</option>
+                      <option value="in_progress">🔄 In Progress</option>
+                      <option value="done">✅ Done</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label htmlFor="priority" className="block text-sm font-semibold text-gray-700">
+                      Priority
+                    </label>
+                    <select
+                      id="priority"
+                      name="priority"
+                      value={formData.priority}
+                      onChange={handleChange}
+                      className="input-elegant appearance-none cursor-pointer"
+                    >
+                      <option value="low">🌱 Low</option>
+                      <option value="medium">⚡ Medium</option>
+                      <option value="high">🔥 High</option>
+                    </select>
+                  </div>
                 </div>
 
-                {/* Priority */}
-                <div>
-                  <label htmlFor="priority" className="block text-sm font-medium text-gray-700">
-                    Priority
-                  </label>
-                  <select
-                    id="priority"
-                    name="priority"
-                    value={formData.priority}
-                    onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  >
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                  </select>
-                </div>
-
-                {/* Project */}
-                <div>
-                  <label htmlFor="project_id" className="block text-sm font-medium text-gray-700">
-                    Project (Optional)
+                {/* Project Assignment */}
+                <div className="space-y-2">
+                  <label htmlFor="project_id" className="block text-sm font-semibold text-gray-700 flex items-center">
+                    <FolderIcon className="h-4 w-4 mr-2 text-primary-500" />
+                    Assign to Project (Optional)
                   </label>
                   <select
                     id="project_id"
                     name="project_id"
                     value={formData.project_id}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="input-elegant appearance-none cursor-pointer"
                   >
-                    <option value="">No project</option>
+                    <option value="">📁 No project - Standalone task</option>
                     {projects.map((project) => (
                       <option key={project.id} value={project.id}>
-                        {project.name}
+                        📂 {project.name}
                       </option>
                     ))}
                   </select>
+                  <p className="text-xs text-gray-500">
+                    Choose a project to organize this task, or leave it as a standalone task
+                  </p>
                 </div>
 
                 {/* Actions */}
-                <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:col-start-2 sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isLoading ? 'Creating...' : 'Create Task'}
-                  </button>
+                <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-gray-100">
                   <button
                     type="button"
                     onClick={onClose}
-                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:col-start-1 sm:text-sm"
+                    className="btn-secondary w-full sm:w-auto"
                   >
                     Cancel
                   </button>
+                  <button
+                    type="submit"
+                    disabled={isLoading || !formData.title.trim() || !formData.description.trim()}
+                    className="btn-primary relative overflow-hidden w-full sm:w-auto"
+                  >
+                    <span className="flex items-center">
+                      {isLoading ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
+                          Creating Task...
+                        </>
+                      ) : (
+                        <>
+                          <PlusIcon className="h-4 w-4 mr-2" />
+                          Create Task
+                        </>
+                      )}
+                    </span>
+                  </button>
                 </div>
               </form>
-            </div>
-          </div>
+            </Dialog.Panel>
+          </Transition.Child>
         </div>
-      </div>
-    </div>
+      </Dialog>
+    </Transition>
   );
 };
 

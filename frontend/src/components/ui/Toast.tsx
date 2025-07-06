@@ -34,23 +34,23 @@ export const Toast: React.FC<ToastProps> = ({
   const getTypeStyles = () => {
     switch (type) {
       case 'success':
-        return 'bg-green-50 border-green-200 text-green-800';
+        return 'bg-emerald-50 border-emerald-200 text-emerald-800 shadow-emerald-100';
       case 'error':
-        return 'bg-red-50 border-red-200 text-red-800';
+        return 'bg-red-50 border-red-200 text-red-800 shadow-red-100';
       case 'warning':
-        return 'bg-yellow-50 border-yellow-200 text-yellow-800';
+        return 'bg-amber-50 border-amber-200 text-amber-800 shadow-amber-100';
       case 'info':
-        return 'bg-blue-50 border-blue-200 text-blue-800';
+        return 'bg-blue-50 border-blue-200 text-blue-800 shadow-blue-100';
       default:
-        return 'bg-gray-50 border-gray-200 text-gray-800';
+        return 'bg-gray-50 border-gray-200 text-gray-800 shadow-gray-100';
     }
   };
 
   return (
     <div
       className={`
-        fixed top-4 right-4 z-50 max-w-md p-4 border rounded-lg shadow-lg
-        transition-all duration-300 ease-in-out
+        fixed top-4 right-4 z-50 max-w-md p-4 border rounded-xl shadow-elegant backdrop-blur-sm
+        transition-all duration-500 ease-in-out
         ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}
         ${getTypeStyles()}
       `}

@@ -1,8 +1,8 @@
 /**
  * Main layout component
  */
-import React from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import Dashboard from '../Dashboard/Dashboard';
 import ProjectList from '../Projects/ProjectList';
@@ -13,11 +13,22 @@ import {
   ClipboardDocumentListIcon,
   UserIcon,
   ArrowRightOnRectangleIcon,
+  Bars3Icon,
+  XMarkIcon,
+  ChartBarIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline';
+import {
+  HomeIcon as HomeIconSolid,
+  FolderIcon as FolderIconSolid,
+  ClipboardDocumentListIcon as ClipboardIconSolid,
+} from '@heroicons/react/24/solid';
 
 const Layout: React.FC = () => {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -25,43 +36,97 @@ const Layout: React.FC = () => {
   };
 
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: HomeIcon },
-    { name: 'Projects', href: '/projects', icon: FolderIcon },
-    { name: 'Tasks', href: '/tasks', icon: ClipboardDocumentListIcon },
+    { name: 'Dashboard', href: '/', icon: HomeIcon, iconSolid: HomeIconSolid },
+    { name: 'Projects', href: '/projects', icon: FolderIcon, iconSolid: FolderIconSolid },
+    { name: 'Tasks', href: '/tasks', icon: ClipboardDocumentListIcon, iconSolid: ClipboardIconSolid },
   ];
 
+  const isActive = (path: string) => location.pathname === path;
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+      {/* Mobile sidebar backdrop */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 lg:hidden" 
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <div className="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg">
+      <div className={`fixed inset-y-0 left-0 z-50 w-72 bg-white/80 backdrop-blur-xl shadow-2xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}>
         <div className="flex h-full flex-col">
           {/* Logo */}
-          <div className="flex h-16 items-center px-6 border-b">
-            <h1 className="text-xl font-bold text-gray-900">Platform</h1>
+          <div className="flex h-20 items-center justify-between px-6 border-b border-gray-100">
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-gradient-to-br from-primary-500 to-accent-purple rounded-xl shadow-lg shadow-primary-200">
+                <SparklesIcon className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-gradient">Platform</h1>
+                <p className="text-xs text-gray-500">Project Management</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <XMarkIcon className="h-5 w-5 text-gray-500" />
+            </button>
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-3 py-6 space-y-1">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="group flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100 hover:text-gray-900"
-              >
-                <item.icon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" />
-                {item.name}
-              </a>
-            ))}
+          <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
+            {navigation.map((item) => {
+              const active = isActive(item.href);
+              const Icon = active ? item.iconSolid : item.icon;
+              
+              return (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={`group flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 ${
+                    active
+                      ? 'bg-gradient-to-r from-primary-50 to-primary-100 text-primary-700 shadow-sm border-l-4 border-primary-500'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:translate-x-1'
+                  }`}
+                >
+                  <Icon className={`mr-3 h-5 w-5 transition-colors ${
+                    active ? 'text-primary-600' : 'text-gray-400 group-hover:text-gray-600'
+                  }`} />
+                  <span className="flex-1">{item.name}</span>
+                  {active && (
+                    <div className="ml-auto h-2 w-2 rounded-full bg-primary-500 animate-pulse" />
+                  )}
+                </a>
+              );
+            })}
           </nav>
 
+          {/* Stats Summary */}
+          <div className="px-4 py-4 border-t border-gray-100">
+            <div className="bg-gradient-to-r from-primary-50 to-accent-purple/10 rounded-xl p-4">
+              <div className="flex items-center justify-between mb-2">
+                <ChartBarIcon className="h-5 w-5 text-primary-600" />
+                <span className="text-xs text-gray-500">This week</span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900">12</p>
+              <p className="text-xs text-gray-600">Tasks completed</p>
+            </div>
+          </div>
+
           {/* User section */}
-          <div className="border-t p-4">
-            <div className="flex items-center space-x-3 mb-3">
+          <div className="border-t border-gray-100 p-4">
+            <div className="flex items-center space-x-3 p-3 rounded-xl bg-gray-50 mb-3">
               <div className="flex-shrink-0">
-                <UserIcon className="h-8 w-8 text-gray-400" />
+                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary-400 to-accent-purple flex items-center justify-center shadow-lg">
+                  <UserIcon className="h-6 w-6 text-white" />
+                </div>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                <p className="text-sm font-semibold text-gray-900 truncate">
                   {user?.full_name}
                 </p>
                 <p className="text-xs text-gray-500 truncate">
@@ -71,9 +136,9 @@ const Layout: React.FC = () => {
             </div>
             <button
               onClick={handleLogout}
-              className="w-full flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-100"
+              className="w-full flex items-center justify-center px-4 py-2.5 text-sm font-medium text-gray-700 rounded-xl hover:bg-red-50 hover:text-red-600 transition-all duration-300 group"
             >
-              <ArrowRightOnRectangleIcon className="mr-3 h-5 w-5 text-gray-400" />
+              <ArrowRightOnRectangleIcon className="mr-2 h-5 w-5 text-gray-400 group-hover:text-red-500 transition-colors" />
               Logout
             </button>
           </div>
@@ -81,14 +146,36 @@ const Layout: React.FC = () => {
       </div>
 
       {/* Main content */}
-      <div className="ml-64">
-        <main className="py-8 px-8">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/projects" element={<ProjectList />} />
-            <Route path="/tasks" element={<TaskList />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+      <div className="lg:ml-72">
+        {/* Mobile header */}
+        <div className="sticky top-0 z-30 lg:hidden bg-white/80 backdrop-blur-xl shadow-sm">
+          <div className="flex items-center justify-between px-4 py-4">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <Bars3Icon className="h-6 w-6 text-gray-600" />
+            </button>
+            <div className="flex items-center space-x-2">
+              <div className="p-2 bg-gradient-to-br from-primary-500 to-accent-purple rounded-lg shadow-md">
+                <SparklesIcon className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-lg font-bold text-gradient">Platform</h1>
+            </div>
+            <div className="w-10" /> {/* Spacer for balance */}
+          </div>
+        </div>
+        
+        {/* Page content */}
+        <main className="min-h-screen">
+          <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto animate-fade-in">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/projects" element={<ProjectList />} />
+              <Route path="/tasks" element={<TaskList />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
         </main>
       </div>
     </div>
