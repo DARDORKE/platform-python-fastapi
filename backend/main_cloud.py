@@ -72,9 +72,13 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Temporaire : autoriser tous les domaines
-    allow_credentials=False,  # Obligatoire avec allow_origins=["*"]
-    allow_methods=["*"],
+    allow_origins=[
+        "https://platform-python-fastapi.vercel.app",
+        "http://localhost:3000",
+        "https://localhost:3000"
+    ],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
