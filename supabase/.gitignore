@@ -1,0 +1,45 @@
+# ====================================
+# SUPABASE SPECIFIQUE
+# ====================================
+
+# Configuration locale avec clés
+.env
+.env.local
+supabase.env
+
+# Clés et secrets Supabase
+supabase-service-key.txt
+supabase-anon-key.txt
+*.key
+
+# Configuration avec credentials
+config.toml
+supabase.toml
+
+# Fichiers de dump avec données sensibles
+dump_with_data.sql
+backup_*.sql
+*.dump
+
+# Logs Supabase CLI
+.supabase/logs/
+supabase.log
+
+# Cache Supabase CLI
+.supabase/.cache/
+
+# Configuration locale de développement
+.supabase/config.toml
+
+# Functions build
+.supabase/functions/.build/
+
+# ====================================
+# GARDER CES FICHIERS (exemples)
+# ====================================
+
+# ✅ Fichiers à commiter :
+# schema.sql (structure)
+# seed.sql (données de demo)
+# README.md (documentation)
+# migrations/ (si utilisées)

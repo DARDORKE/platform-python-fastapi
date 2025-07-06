@@ -262,3 +262,46 @@ mobile-build-android: ## Build Android
 	@echo "$(GREEN)📱 Build Android...$(NC)"
 	cd mobile && expo build:android
 	@echo "$(GREEN)✅ Build Android terminé!$(NC)"
+
+# Déploiement Cloud
+cloud-setup: ## Configure l'environnement cloud
+	@echo "$(GREEN)☁️ Configuration de l'environnement cloud...$(NC)"
+	@if [ ! -f .env.cloud ]; then \
+		cp .env.cloud.example .env.cloud; \
+		echo "$(YELLOW)⚠️ Fichier .env.cloud créé depuis l'exemple$(NC)"; \
+		echo "$(BLUE)Éditez .env.cloud avec vos vraies valeurs avant de continuer$(NC)"; \
+	else \
+		echo "$(GREEN)✅ Fichier .env.cloud existe déjà$(NC)"; \
+	fi
+
+cloud-test-local: ## Teste la configuration cloud en local
+	@echo "$(GREEN)🧪 Test de la configuration cloud en local...$(NC)"
+	$(DOCKER_COMPOSE) -f docker-compose.cloud.yml up -d
+	@echo "$(GREEN)✅ Test cloud démarré!$(NC)"
+	@echo "$(BLUE)API Cloud: http://localhost:8001$(NC)"
+	@echo "$(BLUE)Frontend Cloud: http://localhost:3001$(NC)"
+
+cloud-test-stop: ## Arrête le test cloud local
+	@echo "$(YELLOW)🔄 Arrêt du test cloud...$(NC)"
+	$(DOCKER_COMPOSE) -f docker-compose.cloud.yml down
+	@echo "$(GREEN)✅ Test cloud arrêté!$(NC)"
+
+deploy-supabase: ## Configure Supabase (base de données)
+	@echo "$(GREEN)📊 Configuration Supabase...$(NC)"
+	@./scripts/deploy_cloud.sh supabase
+
+deploy-railway: ## Déploie sur Railway (backend)
+	@echo "$(GREEN)🚂 Déploiement Railway...$(NC)"
+	@./scripts/deploy_cloud.sh railway
+
+deploy-vercel: ## Déploie sur Vercel (frontend)
+	@echo "$(GREEN)▲ Déploiement Vercel...$(NC)"
+	@./scripts/deploy_cloud.sh vercel
+
+deploy-cloud: ## Déploie tout sur le cloud (Supabase + Railway + Vercel)
+	@echo "$(GREEN)☁️ Déploiement cloud complet...$(NC)"
+	@./scripts/deploy_cloud.sh all
+
+cloud-status: ## Teste le statut du déploiement cloud
+	@echo "$(GREEN)📊 Vérification du statut cloud...$(NC)"
+	@./scripts/deploy_cloud.sh test

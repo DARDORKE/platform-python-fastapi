@@ -193,10 +193,38 @@ curl http://localhost:8000/api/v1/projects
 3. Navigate through dashboard, projects, and tasks
 4. Verify all CRUD operations work
 
+## Cloud Deployment
+
+This project supports both local development and cloud deployment:
+
+### Local Development (Current)
+```bash
+make quick-init  # Docker-based development
+```
+
+### Cloud Deployment (New)
+- **Frontend**: Vercel
+- **Backend**: Railway  
+- **Database**: Supabase
+
+```bash
+make cloud-setup     # Initial cloud configuration
+make deploy-cloud    # Full cloud deployment
+```
+
+See `DEPLOYMENT.md` for detailed cloud deployment instructions.
+
+## Dual Environment Support
+
+The project now supports both environments seamlessly:
+
+- **Local**: `docker-compose.yml` with local PostgreSQL and Redis
+- **Cloud**: `main_cloud.py` with Supabase PostgreSQL and Railway hosting
+- **Test**: `docker-compose.cloud.yml` for testing cloud config locally
+
 ## Future Expansion Possibilities
 
 The current structure is designed to be easily expandable with:
-- Real database persistence with SQLAlchemy models
 - Advanced authentication (OAuth, 2FA)
 - File upload capabilities
 - Real-time features with WebSockets
@@ -207,4 +235,4 @@ The current structure is designed to be easily expandable with:
 
 ---
 
-**This project successfully demonstrates modern full-stack development skills with FastAPI, React, TypeScript, Docker, and PostgreSQL.**
+**This project successfully demonstrates modern full-stack development skills with FastAPI, React, TypeScript, Docker, PostgreSQL, and cloud deployment capabilities.**

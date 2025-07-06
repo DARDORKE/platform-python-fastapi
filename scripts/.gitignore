@@ -1,0 +1,49 @@
+# ====================================
+# SCRIPTS SPECIFIQUE
+# ====================================
+
+# Scripts avec credentials
+*_prod.sh
+*_production.sh
+deploy_with_secrets.sh
+setup_with_keys.sh
+
+# Fichiers de configuration avec secrets
+config_prod.py
+prod_config.json
+production.env
+
+# Logs de scripts
+*.log
+deploy.log
+init.log
+
+# Backups générés par les scripts
+backup_*.sql
+dump_*.sql
+*.backup
+
+# Fichiers temporaires générés
+temp_*
+*.tmp
+.temp/
+
+# Clés générées par les scripts
+*.key
+*.pem
+*.crt
+generated_secrets.txt
+
+# Configuration locale
+local_config.sh
+.local_env
+
+# ====================================
+# GARDER CES FICHIERS
+# ====================================
+
+# ✅ Scripts à commiter :
+# init_project_simple.py (script d'init)
+# deploy_cloud.sh (script de deploy public)
+# *.example.sh (exemples)
+# README.md (documentation)

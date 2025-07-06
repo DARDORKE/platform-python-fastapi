@@ -1,0 +1,46 @@
+# Docker Compose pour tester la configuration cloud en local
+# Utilise les mêmes variables d'environnement que le cloud
+
+services:
+  # Backend avec configuration cloud (utilise PostgreSQL externe)
+  backend-cloud:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.railway
+    container_name: platform_backend_cloud
+    environment:
+      DATABASE_URL: "${DATABASE_URL:-postgresql://platform_user:platform_password@localhost:5432/platform}"
+      SECRET_KEY: "${SECRET_KEY:-your-secret-key-change-in-production}"
+      CORS_ORIGINS: "${CORS_ORIGINS:-http://localhost:3000,https://your-app.vercel.app}"
+      ACCESS_TOKEN_EXPIRE_MINUTES: "${ACCESS_TOKEN_EXPIRE_MINUTES:-30}"
+    ports:
+      - "8001:8000"
+    command: ["uvicorn", "main_cloud:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - platform_network
+
+  # Frontend avec configuration de production
+  frontend-cloud:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: platform_frontend_cloud
+    environment:
+      VITE_API_BASE_URL: "http://localhost:8001"
+      VITE_APP_NAME: "Platform Portfolio (Cloud Test)"
+      NODE_ENV: "production"
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend-cloud
+    networks:
+      - platform_network
+
+networks:
+  platform_network:
+    driver: bridge

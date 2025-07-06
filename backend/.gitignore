@@ -1,0 +1,70 @@
+# ====================================
+# BACKEND PYTHON SPECIFIQUE
+# ====================================
+
+# Variables d'environnement backend
+.env
+.env.local
+.env.production
+.env.development
+.env.test
+
+# Base de données locale
+*.db
+*.sqlite
+*.sqlite3
+app.db
+test.db
+
+# Logs FastAPI
+*.log
+uvicorn.log
+fastapi.log
+gunicorn.log
+
+# Cache Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Alembic versions (si générées automatiquement)
+# Décommentez si vous voulez ignorer les migrations auto-générées
+# alembic/versions/*.py
+
+# Fichiers de configuration avec secrets
+config_prod.py
+settings_prod.py
+
+# Uploads et fichiers utilisateur
+uploads/
+media/
+static/uploads/
+
+# Certificats SSL
+*.pem
+*.key
+*.crt
+
+# Profiling
+*.prof
+.coverage
+htmlcov/
+
+# Documentation générée
+docs/build/
+site/
+
+# Virtual environment
+venv/
+.venv/
+env/
+.env/
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
