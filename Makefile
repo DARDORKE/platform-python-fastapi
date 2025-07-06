@@ -5,7 +5,7 @@
 
 # Variables
 DOCKER_COMPOSE = docker-compose
-BACKEND_CONTAINER = platform_backend
+BACKEND_CONTAINER = backend
 FRONTEND_CONTAINER = platform_frontend
 DATABASE_CONTAINER = platform_database
 WORKER_CONTAINER = platform_worker
@@ -105,6 +105,11 @@ quick-init: ## Initialise le projet sans confirmation
 	@echo "$(GREEN)🚀 Initialisation rapide du projet...$(NC)"
 	@chmod +x scripts/init_project.sh
 	@./scripts/init_project.sh --yes
+	@echo "$(GREEN)✅ Projet initialisé!$(NC)"
+
+init-simple: ## Initialise le projet sans Alembic (création directe)
+	@echo "$(GREEN)🚀 Initialisation simple du projet (sans Alembic)...$(NC)"
+	@$(DOCKER_COMPOSE) exec -T $(BACKEND_CONTAINER) python /app/scripts/init_project_simple.py
 	@echo "$(GREEN)✅ Projet initialisé!$(NC)"
 
 db-reset: ## Remet à zéro la base de données

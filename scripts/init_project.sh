@@ -127,15 +127,26 @@ wait_for_services() {
 run_initialization() {
     print_step "Exécution de l'initialisation complète..."
     
-    # Run the Python initialization script
-    print_info "Lancement du script d'initialisation..."
-    if docker-compose exec -T backend python /app/scripts/init_project.py; then
-        print_success "Initialisation terminée avec succès"
+    # Try the full init script first
+    print_info "Tentative d'initialisation avec Alembic..."
+    if docker-compose exec -T backend python /app/scripts/init_project.py 2>/dev/null; then
+        print_success "Initialisation avec Alembic terminée avec succès"
+        return 0
+    fi
+    
+    # If that fails, try the simple version
+    print_warning "Échec avec Alembic, tentative d'initialisation simple..."
+    print_info "Lancement du script d'initialisation simple (sans Alembic)..."
+    if docker-compose exec -T backend python /app/scripts/init_project_simple.py; then
+        print_info "Redémarrage du backend pour vider le cache..."
+        docker-compose restart backend > /dev/null 2>&1
+        print_success "Initialisation simple terminée avec succès"
+        return 0
     else
-        print_error "Échec de l'initialisation"
+        print_error "Échec des deux méthodes d'initialisation"
         print_info "Logs du backend :"
         docker-compose logs --tail=20 backend
-        exit 1
+        return 1
     fi
 }
 
