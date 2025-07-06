@@ -75,8 +75,8 @@ app = FastAPI(
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ORIGINS,
-    allow_credentials=True,
+    allow_origins=["*"],  # Temporaire : autoriser tous les domaines
+    allow_credentials=False,  # Obligatoire avec allow_origins=["*"]
     allow_methods=["*"],
     allow_headers=["*"],
 )
