@@ -127,32 +127,6 @@ make fixtures
 - **Health checks** pour la supervision
 - **Scripts d'initialisation** automatisés
 
-## 🏗️ Architecture
-
-```
-├── backend/                    # API FastAPI
-│   ├── app/                    # Code applicatif modulaire
-│   ├── simple_main.py          # API principale avec données de démo
-│   ├── requirements.txt        # Dépendances Python
-│   └── Dockerfile              # Container backend
-├── frontend/                   # Application React
-│   ├── src/
-│   │   ├── components/         # Composants réutilisables
-│   │   ├── store/              # Gestion d'état Zustand
-│   │   ├── lib/                # Utilitaires et configuration API
-│   │   └── types/              # Types TypeScript
-│   ├── package.json            # Dépendances Node.js
-│   └── Dockerfile              # Container frontend
-├── scripts/                    # Scripts d'initialisation
-│   ├── init_project.py         # Initialisation complète avec Alembic
-│   ├── init_project_simple.py  # Initialisation simple sans Alembic
-│   ├── deploy_fixtures.py      # Déploiement des données de démo
-│   └── *.sh                    # Scripts bash avec interface colorée
-├── docker-compose.yml          # Orchestration des services
-├── Makefile                    # Commandes simplifiées
-└── README.md                   # Cette documentation
-```
-
 ## 📊 APIs Disponibles
 
 ### Authentification
@@ -243,20 +217,6 @@ make quick-init
 - **👨‍💻 Développeur senior** : developer@example.com / dev123
 - **🧪 Testeur QA** : tester@example.com / test123
 
-### 📁 Projets (6)
-1. **E-commerce Platform** - Plateforme e-commerce moderne ($85,000)
-2. **Mobile App Development** - Application React Native ($65,000)
-3. **API Documentation Portal** - Portail de documentation ($25,000)
-4. **DevOps Pipeline** - Pipeline CI/CD complet ($45,000) ✅ Terminé
-5. **Analytics Dashboard** - Tableau de bord analytics ($40,000)
-6. **Security Audit** - Audit de sécurité complet ($30,000)
-
-### 📝 Tâches (19)
-Réparties entre les projets avec différents statuts :
-- ✅ **Terminées** : 5 tâches
-- 🔄 **En cours** : 5 tâches  
-- 📋 **À faire** : 9 tâches
-
 ## 🔍 Résolution des Problèmes
 
 ### Problème de Connexion à la Base de Données
@@ -323,8 +283,6 @@ make quick-init
 ## 🔮 Évolutions Possibles
 
 ### 🔐 Sécurité Avancée
-- **2FA/MFA** avec TOTP ou SMS
-- **OAuth2** avec Google/GitHub/LinkedIn
 - **Rate limiting** avancé par utilisateur
 - **Audit logs** pour toutes les actions sensibles
 
@@ -338,10 +296,8 @@ make quick-init
 - **API GraphQL** en complément du REST
 - **Webhooks** pour les événements
 - **Intégrations tierces** (Slack, Teams, Discord)
-- **API de paiement** (Stripe, PayPal)
 
 ### 📱 Application Mobile
-- **React Native** pour iOS/Android
 - **Synchronisation offline** avec cache intelligent
 - **Notifications push** natives
 - **Interface adaptive** tablette/mobile
@@ -350,14 +306,10 @@ make quick-init
 - **Cache Redis** intelligent multi-niveaux
 - **Pagination** optimisée avec curseurs
 - **Compression** des réponses API
-- **CDN** pour les assets statiques
 
 ### 🔧 DevOps & Monitoring
 - **CI/CD pipelines** avec GitHub Actions
 - **Tests automatisés** (unit, integration, e2e)
-- **Monitoring** avec Prometheus + Grafana
-- **Logging centralisé** avec ELK Stack
-- **Kubernetes** deployment avec Helm
 
 ## 📞 Contact
 
