@@ -6,11 +6,24 @@ Une plateforme de gestion moderne développée avec FastAPI et React, conçue po
 
 Ce projet sert de **démonstration technique** pour showcaser les compétences en développement d'applications web modernes avec des technologies de pointe.
 
-## 🚀 Démarrage Rapide
+## 📋 Prérequis
 
-### Prérequis
-- **Docker** et **Docker Compose**
-- **Git** pour cloner le repository
+Avant d'installer le projet, assurez-vous d'avoir les outils suivants installés :
+
+- **Docker** (version 20.10+) - [Installation](https://docs.docker.com/get-docker/)
+- **Docker Compose** (version 2.0+) - [Installation](https://docs.docker.com/compose/install/)
+- **Make** - Généralement préinstallé sur Linux/macOS, [Installation Windows](https://gnuwin32.sourceforge.net/packages/make.htm)
+- **Git** - [Installation](https://git-scm.com/downloads)
+
+### Vérification des prérequis
+```bash
+docker --version          # Docker version 20.10+
+docker-compose --version  # Docker Compose version 2.0+
+make --version            # GNU Make 4.0+
+git --version             # Git 2.0+
+```
+
+## 🚀 Démarrage Rapide
 
 ### Installation Simple
 
