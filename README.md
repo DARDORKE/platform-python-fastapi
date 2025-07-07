@@ -64,13 +64,16 @@ make fixtures
 - **🔗 API Backend** : http://localhost:8000
 - **📚 Documentation API** : http://localhost:8000/docs
 
-### Comptes de Démonstration
 
-| Rôle | Email | Mot de passe |
-|------|-------|--------------|
-| **Admin** | admin@example.com | admin123 |
-| **Manager** | manager@example.com | manager123 |
-| **User** | john.doe@example.com | user123 |
+## 📊 Données de Démonstration
+
+### 👥 Utilisateurs (6)
+- **👑 Administrateur** : admin@example.com / admin123
+- **👨‍💼 Chef de projet** : manager@example.com / manager123  
+- **👤 John Doe** : john.doe@example.com / user123
+- **👤 Jane Smith** : jane.smith@example.com / user123
+- **👨‍💻 Développeur senior** : developer@example.com / dev123
+- **🧪 Testeur QA** : tester@example.com / test123
 
 ## ✅ Fonctionnalités Démontrées
 
@@ -206,16 +209,6 @@ make fixtures
 # Réinitialiser complètement
 make quick-init
 ```
-
-## 📊 Données de Démonstration
-
-### 👥 Utilisateurs (6)
-- **👑 Administrateur** : admin@example.com / admin123
-- **👨‍💼 Chef de projet** : manager@example.com / manager123  
-- **👤 John Doe** : john.doe@example.com / user123
-- **👤 Jane Smith** : jane.smith@example.com / user123
-- **👨‍💻 Développeur senior** : developer@example.com / dev123
-- **🧪 Testeur QA** : tester@example.com / test123
 
 ## 🔍 Résolution des Problèmes
 
