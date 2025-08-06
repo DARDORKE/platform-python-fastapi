@@ -181,7 +181,24 @@ async def root():
 
 @app.get("/health")
 async def health():
-    return {"status": "healthy", "timestamp": datetime.utcnow()}
+    """Health check endpoint with database verification."""
+    try:
+        # Test database connection
+        if db_pool:
+            async with db_pool.acquire() as conn:
+                await conn.fetchval("SELECT 1")
+        
+        return {
+            "status": "healthy", 
+            "timestamp": datetime.utcnow(),
+            "database": "connected" if db_pool else "not_configured"
+        }
+    except Exception as e:
+        return {
+            "status": "unhealthy", 
+            "timestamp": datetime.utcnow(),
+            "error": str(e)
+        }
 
 # Auth endpoints
 @app.post(f"{API_V1_STR}/auth/register", response_model=Token)
